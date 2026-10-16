@@ -1,0 +1,7 @@
+{
+  "name": "dai-chien-ky-hieu-toan",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
