@@ -1070,7 +1070,7 @@ function go(seed,mine,theirs,iA,cb,mode){
  build(0);setBuff(mode);H.style.display='none';O.style.display='none'}
 function leave(){restoreRN();BUFF.d=BUFF.h=0;if(eb){eb.remove();eb=null}$('back').onclick()}
 function home(){leave();MODE='';CB=null;O.style.display='none';H.style.display='block';paintH()}
-function openO(t){if(t)tab=t;pick={};msg='';H.style.display='block';O.style.display='block';paint();pull();if(tab=='rank')loadLB()}
+function openO(t){if(t)tab=t;pick={};msg='';H.style.display='block';O.style.display='block';autoPick();paint();pull();if(tab=='rank')loadLB()}
 function endBar(w){if(eb)eb.remove();eb=document.createElement('div');eb.style.cssText='position:fixed;left:8px;right:8px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:155;background:rgba(15,15,30,.95);border:1px solid #6d28d9;border-radius:14px;padding:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:#fff';
  const win=w<0?'Hòa':MODE=='off'?(TN[w]+' thắng'):MODE=='duel'?((w==0)==IA?'🏆 Bạn thắng!':'Bạn thua'):(w==0?'🏆 Thắng!':'Chưa thắng');
  const t=document.createElement('b');t.style.flex='1';t.textContent=win;eb.append(t);
@@ -1183,6 +1183,15 @@ shop:()=>{const u=new Set(ME.un),adm=isAdm();return`<div class=g><h3>🛒 Cửa 
 topup:()=>{const o=ME.ord,R=PRC?PRC.rate:1000;return`<div class=g><h3>💎 Nạp MK</h3><div class=m>${wal()}<br>1 MK = ${R.toLocaleString('vi-VN')}đ. Chuyển khoản đúng số tiền và nội dung, MK tự cộng sau khi ngân hàng báo có.</div>`+(o?`<div class=m style="text-align:center"><img src="${E(o.qr)}" style="width:100%;max-width:300px;border-radius:12px;background:#fff"><br>Số tiền: <b>${o.amt.toLocaleString('vi-VN')}đ</b><br>Nội dung: <b>${E(o.code)}</b><br>Đang chờ thanh toán…</div>`:`<div class=row>${[10000,20000,50000,100000].map(n=>`<button class=s data-a=topup data-k=${n}>${n/1000}K</button>`).join('')}</div>`)+'</div>'},
 lib:()=>{const u=UN();return'<div class=g><h3>📚 Thư viện ký hiệu</h3><div class=m>🔒 = chưa mở khoá.</div>'+GR.map(g=>`<div class=oh style="color:${g.c}">${g.n}</div>`+g.k.map(k=>{const d=KD[k];let dm='';try{dm=OPV[k]?OPV[k]+' (đấu toán tử)':dmgOf(k,3)}catch(e){}return`<div class=row style="align-items:center;opacity:${u.has(k)?1:.45}"><b style="min-width:60px;font:italic 19px 'Times New Roman',serif">${d.t}</b><span class=m style="margin:0;flex:1">${u.has(k)?'':'🔒 '}HP ${d.op?200:80} · ST ${dm}${d.r&&d.r!='…'?' · f′ = '+d.r:''}</span></div>`}).join('')).join('')+'</div>'},
 adm:()=>`<div class=g><h3>🔑 Mã quản trị</h3>`+(isAdm()?'<div class=m>✅ Đang kích hoạt: dùng được mọi ký hiệu.</div>':'<div class=m>Nhập mã do quản trị viên cấp.</div>')+`<div class=row><input id=ac class=s type=password placeholder="Mã quản trị" style="flex:1"><button class=s data-a=adm>Kích hoạt</button></div></div>`};
+/* ===== Tự chọn đội hình mạnh nhất (sát thương, máu, trung bình của hai chỉ số; không hiển thị) ===== */
+let APm=0;
+const bestSq=()=>{try{const u=UN(),ks=ALL().filter(k=>u.has(k));if(!ks.length)return{};
+ const s=ks.map(k=>{let d=0;try{d=+dmgOf(k,3)||0}catch(e){}return{k,d,h:KD[k]&&KD[k].op?200:80}});
+ const md=Math.max(1,...s.map(x=>x.d)),mh=Math.max(...s.map(x=>x.h));
+ s.forEach(x=>x.s=(x.d/md+x.h/mh)/2+(x.d*x.h)/(md*mh)*1e-3);
+ s.sort((a,b)=>b.s-a.s);const n=Math.min(s.length,CAP),r={};
+ for(let i=0;i<CAP;i++){const k=s[i%n].k;r[k]=(r[k]||0)+1}return r}catch(e){return{}}};
+const autoPick=()=>{if(!tot()){const b=bestSq();if(Object.keys(b).length)pick=b}};
 /* ===== Giọng nói tiếng Việt cho nhân vật ===== */
 const CHV={g:'Cảm ơn cậu đã mời tớ! Từ giờ tớ sẽ tính toán cùng cậu.',l:'Chào em, cô sẽ giữ vững đội hình cho em.',b:'Càng đánh càng hăng! Cùng nhau lên nào!',s:'Đạo hàm hay tích phân, lão phu đều không ngại.'};
 const VO={on:localStorage.dc_vo!=='0',vs:[],tm:0,
@@ -1227,12 +1236,12 @@ function paintH(f){if(H.style.display=='none')return;if(!f&&document.activeEleme
 const F=document.createElement('input');F.type='file';F.accept='image/*';F.hidden=1;
 F.onchange=()=>{const f=F.files[0];if(!f)return;const im=new Image;im.onload=async()=>{const c=document.createElement('canvas');c.width=c.height=96;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,96,96);const r=await call('av',{d:c.toDataURL('image/jpeg',.7)});msg=r.err||'Đã đổi ảnh';await pull();paint();paintH()};im.src=URL.createObjectURL(f);F.value=''};
 async function pull(){if(!TK)return;const r=await call('me');if(r.err||!r.me){if(r.bad){TK='';localStorage.dc_tk='';ME=null}paintH();return}
- if(ME&&r.me.mk>ME.mk)toast('💎 Nạp thành công +'+(r.me.mk-ME.mk)+' MK',4000);if(!PRC)call('shop').then(x=>{if(x.p){PRC=x;paint()}});ME=r.me;FR=r.fr;RQ=r.rq;CAP=r.cap;MT=r.m&&r.m.id!=dis?r.m:null;
+ if(ME&&r.me.mk>ME.mk)toast('💎 Nạp thành công +'+(r.me.mk-ME.mk)+' MK',4000);if(!PRC)call('shop').then(x=>{if(x.p){PRC=x;paint()}});ME=r.me;FR=r.fr;RQ=r.rq;CAP=r.cap;MT=r.m&&r.m.id!=dis?r.m:null;if(MT&&MT.st=='pick'&&APm!=MT.id){APm=MT.id;autoPick()}
  if(MT&&MT.st=='ready'&&fg!=MT.id&&phase=='pick'){const m=MT;fg=m.id;LM=m.mode||'normal';go(m.seed,m.mine,m.theirs,m.A,async w=>{await call('res',{id:m.id,w});pull()},'duel')}
  if(!(document.activeElement&&document.activeElement.tagName=='INPUT')){paint();paintH()}}
 async function act(a,k,v,c){
  if(a=='x'){home();return}
- if(a=='tab'){tab=k;pick={};FM=null;if(k=='rank')loadLB()}
+ if(a=='tab'){tab=k;pick={};autoPick();FM=null;if(k=='rank')loadLB()}
  else if(a=='padd'){if(tot()<CAP)pick[k]=(pick[k]||0)+1;else msg='Tối đa '+CAP+' quân'}
  else if(a=='pdec'){if(--pick[k]<=0)delete pick[k]}
  else if(a=='login'||a=='reg'){const r=await call(a,{u:v('lu'),p:v('lp')});if(r.err)msg=r.err;else{msg='';TK=r.t;localStorage.dc_tk=TK;PS=1;await pull()}}
@@ -1258,7 +1267,7 @@ async function act(a,k,v,c){
  else if(a=='facc'){await call('facc',{u:k});await pull()}
  else if(a=='locked'){msg='Cần đạt Lv 7 để chơi xếp hạng (hiện Lv '+ME.lv+')'}
  else if(a=='chal'||a=='queue'){LM=k=='rank'?'rank':'normal';const r=await call(a,{to:k,mode:k});msg=r.err||'';await pull()}
- else if(a=='submit'){const r=await call('pick',{id:MT.id,ro:pick});msg=r.err||'';if(!r.err)pick={};await pull()}
+ else if(a=='submit'){const r=await call('pick',{id:MT.id,ro:pick});msg=r.err||'';if(!r.err){pick={};autoPick()}await pull()}
  else if(a=='dis'){dis=MT.id;MT=null}
  else if(a=='adm'){const h=HH(v('ac').trim().toUpperCase());await call('prog',{adm:h});await pull();if(ME.admok)msg='✅ Đã mở khoá toàn bộ ký hiệu';else{await call('prog',{adm:''});await pull();msg='Mã không đúng, đã bị thu hồi hoặc hết hạn'}}
  else if(a=='ch'){if(+k>=2){msg='🔒 Chương này sẽ mở ở bản cập nhật sau';toast(msg)}else CH=+k}
