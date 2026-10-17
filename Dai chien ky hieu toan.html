@@ -174,12 +174,54 @@ html.rm body::after{animation:none!important}
 .sg2{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}.sg2 button{font:600 12.5px system-ui;padding:8px 10px;border-radius:9px;border:1px solid var(--bd);background:transparent;color:var(--fg);cursor:pointer}.sg2 button.on{background:var(--y);color:#111;border-color:var(--y)}
 .sr input[type=range]{flex:none;width:44%}
 .sbt{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.sbt.col{flex-direction:column;margin:0}.sbt .s{padding:11px}
-</style></head><body><main>
+
+/* ===== icon toolbar ===== */
+#hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}#hdr h1{margin:0;flex:1;min-width:0}
+#tbar{display:flex;gap:8px;flex:none}
+.ib{width:44px;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;border:1px solid var(--bd);border-bottom:3px solid var(--tc,var(--bd));background:color-mix(in srgb,var(--card) 88%,transparent);color:var(--fg);cursor:pointer;box-shadow:0 2px 10px rgba(20,40,80,.1)}
+.ib.sm{width:40px;height:40px;border-radius:12px}
+.ib svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.ib:active{border-color:var(--y)}.ib:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.launch .lc{background:none;color:var(--mut);padding:0 4px;font-size:28px;line-height:1}
+body.recording #hm2{display:none!important}
+/* ===== tab Chiến trường trong Chọn đối tượng ===== */
+.obv{overflow-x:auto;scrollbar-width:none}.obv::-webkit-scrollbar{display:none}.obv button{flex:1 0 auto;padding:9px 10px}
+.obbw{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:8px 12px 18px;display:none}
+.obp.bfv .obbw{display:block}.obp.bfv .obt,.obp.bfv .obq,.obp.bfv .obc,.obp.bfv .obb,.obp.bfv .qq,.obp.bfv #obcl{display:none}
+.obbw #bf{background:none;border:0;box-shadow:none;padding:0;margin:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.obbw #bf>h3{display:none}.obbw #bf .row{margin:4px 0;gap:5px}
+.obbw .sgl{margin:8px 0 3px;font-size:11.5px}.obbw .sgw{gap:5px}
+.obbw .sgw .s{min-height:32px;padding:4px 10px;font-size:12.5px;border-radius:9px}
+.obbw #uc{width:100px!important;min-height:32px;padding:4px 10px;font-size:12.5px}
+.obbw #sg{font-size:12px;margin:4px 0}
+.obbw details.bfd{border-top:1px solid var(--bd);margin-top:8px;padding-top:2px}
+.obbw details.bfd>summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0}
+
+/* ===== cốt truyện ===== */
+#dlg{position:fixed;inset:0;z-index:175;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(5,8,20,.74)}#dlg[hidden]{display:none}
+.dlk{flex:1}.dls{display:flex;justify-content:center;align-items:flex-end;gap:14px;padding:0 12px 10px}
+.dlp{display:flex;flex-direction:column;align-items:center;color:#fff;opacity:.4;transform:scale(.86);transition:.2s;max-width:30%}.dlp.on{opacity:1;transform:scale(1.08)}
+.dla{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:46px;overflow:hidden;border:3px solid var(--pc);background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--pc) 40%,#1e1b4b),#0f172a);box-shadow:0 0 18px var(--pc)}.dla img{width:100%;height:100%;object-fit:cover}
+.dlp b{font-size:13px;margin-top:5px;text-align:center}.dlp small{font-size:11px;opacity:.8;text-align:center}
+.dlb{background:#0f1226;color:#fff;border-top:2px solid #6d28d9;border-radius:18px 18px 0 0;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px))}
+.dln{font-weight:800;font-size:15px;margin-bottom:4px}.dlt{min-height:72px;font-size:15.5px;line-height:1.5}.dlt.nar{font-style:italic;color:#cbd5e1;text-align:center}
+.dlf{display:flex;align-items:center;gap:8px;margin-top:8px}.dlc{flex:1;text-align:center;font-size:12px;color:#94a3b8}.dlb .s{background:transparent;color:#cbd5e1;border-color:#334155}
+.cmp{display:flex;gap:6px}.cmv{width:40px;height:40px;flex:none;border-radius:50%;border:2px solid var(--pc);display:inline-flex;align-items:center;justify-content:center;font-size:22px;background:color-mix(in srgb,var(--pc) 18%,var(--card))}.cmv.off{filter:grayscale(1);opacity:.4;border-style:dashed}
+.bfp{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}.bch{display:inline-block;font:700 12px system-ui;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--y) 28%,var(--card));border:1px solid var(--bd)}
+.s.lk{opacity:.55}
+.sm-h{display:flex;gap:12px;align-items:center;margin:10px 0;padding:10px;border-radius:14px;background:color-mix(in srgb,var(--y) 12%,var(--card));border:1px solid var(--bd)}.sm-e{font-size:38px}
+.sm-pg{display:block;height:8px;border-radius:5px;background:var(--bd);overflow:hidden;margin-bottom:3px}.sm-pg i{display:block;height:100%;background:#22c55e;border-radius:5px}
+.sm-l{position:relative}.sm-l::before{content:"";position:absolute;left:31px;top:20px;bottom:20px;width:3px;background:var(--bd)}
+.sm-n{position:relative;display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:6px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+.sm-b{position:relative;z-index:1;flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;border:3px solid var(--bd);background:var(--card)}
+.sm-b i{position:absolute;right:-5px;bottom:-5px;font:700 11px system-ui;font-style:normal;background:#22c55e;color:#fff;border-radius:9px;padding:1px 4px}.sm-b i:empty{display:none}
+.sm-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.sm-t b{font-size:14px}.sm-t small{font-size:12px;color:var(--mut)}
+.sm-n.done .sm-b{border-color:#22c55e}.sm-n.cur{border-color:var(--y);box-shadow:0 0 0 2px color-mix(in srgb,var(--y) 40%,transparent)}.sm-n.cur .sm-b{border-color:var(--y)}
+.sm-n.lock{opacity:.5}.sm-n.lock .sm-b i{background:#64748b}.sm-n.boss{border-color:#ef4444;background:color-mix(in srgb,#ef4444 8%,var(--card))}.sm-n.boss .sm-b{border-color:#ef4444}
+.sm-n button{flex:none;min-width:46px}
+</style><script>window.ICO={'home': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>', 'gear': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>', 'book': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg>', 'back': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>'}</script></head><body><main>
 <section id="pick">
-<h1>Đại chiến ký hiệu toán</h1>
-<button class="launch" id="stgo" style="--tc:#a3e635"><span class="lg">⚙️</span><span class="lt"><b>Cài đặt</b><small>Âm thanh, hiển thị, quay màn hình, dữ liệu</small></span><span class="lc">Mở</span></button>
-<button class="launch" id="hgo" style="--tc:#5eead4"><span class="lg">📖</span><span class="lt"><b>Hướng dẫn chơi</b><small>Cơ chế sát thương &amp; cách thao tác</small></span><span class="lc">Mở</span></button>
-<div class="g" id="hs"><h3><span class="dot" style="background:#a3e635"></span>📜 Lưu & lịch sử</h3><div class="row"><button class="s" id="ld">▶ Tiếp tục</button><button class="s" id="sv0">💾 Lưu cấu hình</button><button class="s dng" id="rst">♻️ Đặt lại cài đặt</button><button class="s" id="ch">🗑 Xóa lịch sử</button></div><div id="hl"></div><div class="oh">🎞 Lịch sử quay <button class="s" id="rcx" style="float:right;padding:4px 9px;font-size:12px">Xóa hết</button></div><div id="rcl"></div></div>
+<div id="hdr"><h1>Đại chiến ký hiệu toán</h1><div id="tbar"><button class="ib" id="stgo" aria-label="Cài đặt" title="Cài đặt" style="--tc:#a3e635"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="ib" id="hgo" aria-label="Hướng dẫn chơi" title="Hướng dẫn chơi" style="--tc:#5eead4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg></button></div></div>
 <div class="g"><h3><span class="dot" style="background:#9be0ff"></span>✏️ Tự vẽ hàm số</h3><p>Gõ hoặc bấm phím ký hiệu, xem đồ thị ngay, rồi bấm + Thêm hàm để lưu vào danh sách hàm đã vẽ.</p><div id="dp"></div><div class="ch" id="kp" style="margin-top:8px"></div><canvas id="pc" width="520" height="150" style="aspect-ratio:auto;height:auto;margin-top:8px"></canvas></div>
 <p class="m">Chọn số phe, rồi bấm “Chọn đối tượng” để thêm ký hiệu vào phe đang chọn.</p>
 <div class="row" id="np"></div>
@@ -205,10 +247,12 @@ html.rm body::after{animation:none!important}
 <section id="game" style="display:none">
 <div id="stage"><canvas id="c" width="560" height="560"></canvas><div id="zb"><button class="s" id="zi">＋</button><button class="s" id="zo">－</button><button class="s" id="zf">⛶</button><button class="s" id="zm">☰</button><button class="s" id="zn" aria-label="Ghi chú trên sân">✏️<i id="znc"></i></button><button class="s" id="zb2" aria-label="Chiến trường">🏟</button></div><div id="fp"></div><button class="s" id="zt" aria-label="Hiện/ẩn nút chức năng">▼</button></div>
 <div id="bars"></div><div id="st"></div><div id="ol"></div>
-<div class="row"><button class="b" id="begin" style="display:none">▶ Xuất phát</button><button class="s" id="sp">Tốc độ ×1</button><button class="s on" id="mu">🎵 Nhạc</button><button class="s on" id="sf">🔊 Âm</button><button class="s on" id="ts">📊 Bảng chỉ số (ngoài sân)</button><button class="s" id="th">❤ Máu trên quân (trong sân)</button><button class="s" id="svb">💾 Lưu</button><button class="s" id="rec" aria-label="Quay màn hình">⏺ Quay</button><button class="s" id="stg2">⚙️ Cài đặt</button><button class="s" id="hg2">📖 Hướng dẫn</button><button class="s" id="back">↺ Chọn lại</button><div style="display:flex;gap:7px;flex-basis:100%"><input id="tx" class="s" maxlength="60" placeholder="✍ Ghi chú trong trận…" style="flex:1;min-width:0"><button class="s" id="txb">Gửi</button></div></div>
+<div class="row"><button class="b" id="begin" style="display:none">▶ Xuất phát</button><button class="s" id="sp">Tốc độ ×1</button><button class="s on" id="mu">🎵 Nhạc</button><button class="s on" id="sf">🔊 Âm</button><button class="s on" id="ts">📊 Bảng chỉ số (ngoài sân)</button><button class="s" id="th">❤ Máu trên quân (trong sân)</button><button class="s" id="svb">💾 Lưu</button><button class="s" id="rec" aria-label="Quay màn hình">⏺ Quay</button><button class="s ib sm" id="stg2" aria-label="Cài đặt" title="Cài đặt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="s ib sm" id="hg2" aria-label="Hướng dẫn" title="Hướng dẫn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg></button><button class="s ib sm" id="back" aria-label="Chọn lại" title="Chọn lại"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button><div style="display:flex;gap:7px;flex-basis:100%"><input id="tx" class="s" maxlength="60" placeholder="✍ Ghi chú trong trận…" style="flex:1;min-width:0"><button class="s" id="txb">Gửi</button></div></div>
 </section>
 <button class="s" id="rec0" aria-label="Quay toàn màn hình">⏺ Quay</button>
 </main>
+<div id="hsPark" hidden><div class="g" id="hs"><h3><span class="dot" style="background:#a3e635"></span>📜 Lưu & lịch sử</h3><div class="row"><button class="s" id="ld">▶ Tiếp tục</button><button class="s" id="sv0">💾 Lưu cấu hình</button><button class="s dng" id="rst">♻️ Đặt lại cài đặt</button><button class="s" id="ch">🗑 Xóa lịch sử</button></div><div id="hl"></div><div class="oh">🎞 Lịch sử quay <button class="s" id="rcx" style="float:right;padding:4px 9px;font-size:12px">Xóa hết</button></div><div id="rcl"></div></div>
+</div>
 <div id="hgd" role="dialog" aria-modal="true" aria-label="Hướng dẫn chơi"><div class="hgk"></div><div class="hgp"><div class="hgh"><b>📖 Hướng dẫn chơi</b><button class="s" id="hgx" aria-label="Đóng">✕</button></div><div class="htb" id="htb"></div><div class="hgb">
 
 <section class="hc" data-c="c1"><h4>🎯 Cơ bản</h4>
@@ -231,7 +275,7 @@ html.rm body::after{animation:none!important}
 <li><b>✏️ Tự vẽ hàm:</b> gõ hoặc bấm phím ký hiệu (ví dụ <code>sin(x)*x/2</code>, <code>x^2=4+x</code>), xem đồ thị ngay, bấm “+ Thêm hàm”. Hàm lưu ở tab <i>Tự vẽ</i>.</li>
 <li><b>🗑 Đội hình:</b> xem toàn phe, tick chọn loại để xóa, hoặc dùng Xóa cuối 1 / Xóa n cuối / Xóa hết.</li>
 <li><b>👁 Xem trước:</b> xem bố trí các phe trong sân trước khi bắt đầu.</li></ul></details>
-<details><summary>Chiến trường</summary><p>Chọn diện tích sân, kiểu lưới, “1 ô bằng bao nhiêu đơn vị”, hình dạng sân (hoặc tự đặt trần / đáy / hai bên bằng hàm). Có thể bật “Tự đổi chiến trường” mỗi n giây, ngẫu nhiên hoặc theo thứ tự.</p></details>
+<details><summary>Chiến trường</summary><p>Mở 🧩 Chọn đối tượng → tab <i>🏟 Chiến trường</i>. Chọn diện tích sân, kiểu lưới, “1 ô bằng bao nhiêu đơn vị”, hình dạng sân (hoặc tự đặt trần / đáy / hai bên bằng hàm). Có thể bật “Tự đổi chiến trường” mỗi n giây, ngẫu nhiên hoặc theo thứ tự.</p></details>
 <details><summary>Bắt đầu trận</summary><ul>
 <li><b>▶ Bắt đầu:</b> đếm ngược 3 giây rồi mở lồng.</li>
 <li><b>✋ Tự đặt vị trí:</b> kéo thả từng ký hiệu trong lồng của phe mình, rồi bấm <b>▶ Xuất phát</b>.</li></ul></details>
@@ -264,11 +308,11 @@ html.rm body::after{animation:none!important}
 <li><b>Ẩn thông báo khi quay:</b> bật mặc định trong ⚙️ Cài đặt, thông báo nhỏ sẽ không hiện lúc đang quay.</li>
 <li>Trên iPhone/Android, web không quay được toàn màn hình nên game ẩn nút và lựa chọn này; trong trận bấm ⏺ Quay để quay màn hình chiến đấu, hoặc dùng trình quay của hệ thống để quay toàn màn hình.</li></ul></details>
 <details><summary>Lịch sử quay</summary><ul>
-<li>Mỗi video quay xong được lưu tự động vào mục <b>🎞 Lịch sử quay</b> (màn chuẩn bị, trong khung “Lưu &amp; lịch sử”), giữ tối đa 10 video gần nhất.</li>
+<li>Mỗi video quay xong được lưu tự động vào mục <b>🎞 Lịch sử quay</b> (trong ⚙️ Cài đặt → 💾 Dữ liệu), giữ tối đa 10 video gần nhất.</li>
 <li>Mỗi dòng ghi ngày giờ, độ dài, dung lượng. <b>▶ Xem / Lưu</b> mở lại khung xem để tải về hoặc chia sẻ; <b>🗑</b> xóa một video; <b>Xóa hết</b> (bấm hai lần) xóa toàn bộ.</li>
 <li>Video chỉ nằm trong trình duyệt của thiết bị này; xóa dữ liệu trình duyệt thì mất. Chế độ riêng tư có thể không lưu được. Nên tải về những video quan trọng.</li></ul></details>
 <details><summary>Lưu &amp; lịch sử đấu</summary><ul>
-<li><b>💾 Lưu cấu hình</b>, <b>▶ Tiếp tục ván đã lưu</b> (trận tự lưu mỗi 8 giây), xem lịch sử các trận đã kết thúc và <b>↺ Dùng lại cấu hình</b>.</li>
+<li>Nằm trong <b>⚙️ Cài đặt → 💾 Dữ liệu</b>: <b>💾 Lưu cấu hình</b>, <b>▶ Tiếp tục ván đã lưu</b> (trận tự lưu mỗi 8 giây), xem lịch sử các trận đã kết thúc và <b>↺ Dùng lại cấu hình</b>.</li>
 <li><b>♻️ Đặt lại cài đặt</b> cần bấm hai lần để xác nhận (giữ hàm đã vẽ và lịch sử). <b>🗑 Xóa lịch sử</b> chỉ xóa lịch sử đấu, không xóa lịch sử quay.</li></ul></details>
 </section>
 
@@ -383,7 +427,7 @@ function parse(s){s=s.trim().toLowerCase().replace(/\s+/g,'');if(s.includes('=')
 $('dp').append($('fx').parentNode,$('e2'));
 const dl=document.createElement('div');dl.className='g';dl.id='dl';dl.innerHTML='<h3><span class="dot" style="background:#ff4d6d"></span>🗑 Xóa đối tượng (phe đang chọn)</h3><div class="row"><button class="s" id="d1">Xóa 1</button><input id="dn" class="s" type="number" min="1" value="5" style="width:64px"><button class="s" id="dnb">Xóa n</button><button class="s" id="da">Xóa hết phe này</button><button class="s" id="dall">Xóa tất cả phe</button></div>';
 $('clr').style.display='none';$('rm').style.display='none';
-$('pick').append($('pc').parentNode,$('np'),$('tabs'),$('sum'),$('gr'),$('go').parentNode,$('qp'),$('bf'),$('hs'),$('err'),dl);
+$('pick').append($('pc').parentNode,$('np'),$('tabs'),$('sum'),$('gr'),$('go').parentNode,$('qp'),$('err'),dl);
 const rmN=n=>{const m=delLast(ros[at],n);ui();toast('Đã xóa '+fmt(m)+' đối tượng')};
 $('d1').onclick=()=>rmN(1);$('dnb').onclick=()=>rmN(Math.max(1,Math.floor(+$('dn').value)||1));$('da').onclick=()=>rmN(tsum(ros[at]));$('dall').onclick=()=>{ros=nR();ui();toast('Đã xóa tất cả')};
 const KP=['x','^','(',')','+','-','*','/','sqrt(','pi','e','abs(x)','sin(','cos(','tan(','cot(','sec(','csc(','asin(','acos(','atan(','ln(','log(','exp(','sinh(','cosh('],KL={'sqrt(':'√','pi':'π','abs(x)':'|x|','asin(':'arcsin','acos(':'arccos','atan(':'arctan'};
@@ -406,8 +450,8 @@ const gkeys=g=>{const f=(g.rep||[]).map(r=>r[0]);return [...g.k,...Object.keys(r
 function pAdd(k){const n=qty(),m=mode>0?addK(ros[at],k,n):delK(ros[at],k,n);ui();toast((mode>0?'+':'−')+fmt(m)+' × '+KD[k].t+' · '+TN[at])}
 function openSheet(v){$('obs').classList.toggle('open',v);document.documentElement.style.overflow=v?'hidden':'';if(v)pk(0)}
 $('qty').parentNode.style.display='none';
-(function(){const s=document.createElement('div');s.id='obs';s.innerHTML='<div class="obk"></div><div class="obp" role="dialog" aria-modal="true" aria-label="Chọn đối tượng"><div class="oph"><div class="oh1"><b>🧩 Chọn đối tượng</b><button class="s" id="obx" aria-label="Đóng">✕</button></div><div class="obv"><button id="obv0" class="on">📚 Thư viện</button><button id="obv1">✏️ Tự vẽ</button><button id="obv2">🗑 Đội hình</button><button id="obv3">👁 Xem trước</button></div><div class="obt" id="obt"></div><div class="obq"><input id="obsr" type="search" placeholder="Tìm: sin, log, đạo hàm…"><div class="stp" id="obst"></div></div><div class="obc" id="obc"></div></div><div class="obb" id="obb"></div><div class="obrw" id="obrw"></div><div class="obdw" id="obdw"><div id="obmine" style="--gc:#9be0ff"></div></div><div class="obpw" id="obpw"></div><div class="opf"><div class="ob2" id="ob2"></div><button class="s" id="obcl">Xóa phe này</button><button class="b" id="obd">Xong</button></div></div>';
-document.body.appendChild(s);
+(function(){const s=document.createElement('div');s.id='obs';s.innerHTML='<div class="obk"></div><div class="obp" role="dialog" aria-modal="true" aria-label="Chọn đối tượng"><div class="oph"><div class="oh1"><b>🧩 Chọn đối tượng</b><button class="s" id="obx" aria-label="Đóng">✕</button></div><div class="obv"><button id="obv0" class="on">📚 Thư viện</button><button id="obv1">✏️ Tự vẽ</button><button id="obv2">🗑 Đội hình</button><button id="obv3">👁 Xem trước</button><button id="obv4">🏟 Chiến trường</button></div><div class="obt" id="obt"></div><div class="obq"><input id="obsr" type="search" placeholder="Tìm: sin, log, đạo hàm…"><div class="stp" id="obst"></div></div><div class="obc" id="obc"></div></div><div class="obb" id="obb"></div><div class="obrw" id="obrw"></div><div class="obdw" id="obdw"><div id="obmine" style="--gc:#9be0ff"></div></div><div class="obpw" id="obpw"></div><div class="obbw" id="obbw"></div><div class="opf"><div class="ob2" id="ob2"></div><button class="s" id="obcl">Xóa phe này</button><button class="b" id="obd">Xong</button></div></div>';
+document.body.appendChild(s);$('obbw').appendChild($('bf'));
 const mn=document.createElement('button'),pl=document.createElement('button'),q=$('qty');mn.className=pl.className='s';mn.textContent='−';pl.textContent='+';mn.setAttribute('aria-label','Giảm số lượng');pl.setAttribute('aria-label','Tăng số lượng');
 q.max=MAXQ;q.step=1;const stp=v=>Math.pow(10,Math.floor(Math.log10(Math.max(1,v)))),fq=()=>{q.style.width=Math.max(46,String(q.value).length*11+20)+'px'};q.addEventListener('input',fq);
 mn.onclick=()=>{const v=qty();q.value=Math.max(1,v-stp(v-1||1));fq()};pl.onclick=()=>{const v=qty();q.value=Math.min(MAXQ,v+stp(v));fq()};
@@ -415,14 +459,14 @@ const lb=document.createElement('span');lb.style.cssText='font-size:12px;color:v
 $('obst').append(lb,mn,q,pl,$('md'));
 const qq=document.createElement('div');qq.className='qq';[1,10,100,1000,10000,100000,1000000].forEach(v=>{const b=document.createElement('button');b.className='s';b.textContent=v>=1e6?'1M':v>=1e3?v/1e3+'K':v;b.onclick=()=>{q.value=v;fq()};qq.appendChild(b)});s.querySelector('.obq').after(qq);
 $('obdw').prepend($('dp').parentNode);
-const vw=v=>{const p=s.querySelector('.obp');p.classList.toggle('dr',v==1);p.classList.toggle('rs',v==2);p.classList.toggle('pv',v==3);[0,1,2,3].forEach(i=>$('obv'+i).classList.toggle('on',i==v));if(v==1)prev();pk(0)};
-$('obv0').onclick=()=>vw(0);$('obv1').onclick=()=>vw(1);$('obv2').onclick=()=>vw(2);$('obv3').onclick=()=>vw(3);$('obx').onclick=$('obd').onclick=s.querySelector('.obk').onclick=()=>openSheet(0);
+const vw=v=>{const p=s.querySelector('.obp');p.classList.toggle('dr',v==1);p.classList.toggle('rs',v==2);p.classList.toggle('pv',v==3);p.classList.toggle('bfv',v==4);[0,1,2,3,4].forEach(i=>$('obv'+i).classList.toggle('on',i==v));if(v==1)prev();if(v==4){try{bfRender();segSync()}catch(_){}}pk(0)};
+$('obv0').onclick=()=>vw(0);$('obv1').onclick=()=>vw(1);$('obv2').onclick=()=>vw(2);$('obv3').onclick=()=>vw(3);$('obv4').onclick=()=>vw(4);$('obx').onclick=$('obd').onclick=s.querySelector('.obk').onclick=()=>openSheet(0);
 $('obcl').onclick=()=>{ros[at]={};ui()};
 $('obsr').oninput=e=>{pq=e.target.value;pk(0)};
 document.addEventListener('keydown',e=>{if(e.key=='Escape'&&isOpen())openSheet(0)})})();
 function pk(keep=1){
  const tot=ros.slice(0,nt).reduce((a,r)=>a+tsum(r),0),T=TC[at];
- $('gr').innerHTML=`<button class="launch" style="--tc:${T}"><span class="lg">🧩</span><span class="lt"><b>Chọn đối tượng</b><small>${TN[at]} đang có ${fmt(tsum(ros[at]))} · cả trận ${fmt(tot)} ký hiệu</small></span><span class="lc">Mở</span></button>`;
+ $('gr').innerHTML=`<button class="launch" style="--tc:${T}"><span class="lg">🧩</span><span class="lt"><b>Chọn đối tượng</b><small>${TN[at]} đang có ${fmt(tsum(ros[at]))} · cả trận ${fmt(tot)} ký hiệu</small></span><span class="lc">›</span></button>`;
  $('gr').firstChild.onclick=()=>openSheet(1);
  pvRefresh();if(!isOpen())return;
  const cnt=ros[at],G=grp(),q=pq.trim().toLowerCase(),gc=g=>gkeys(g).reduce((a,k)=>a+(cnt[k]||0),0);
@@ -716,7 +760,8 @@ C.onpointerup=()=>{drag=null;pan=null};
 const txt=(x,y,s,col,big)=>texts.push({x,y,s,col,l:1,big});
 function burst(x,y,col){for(let i=0;i<12;i++){const a=R(0,6.28),s=R(40,130);parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:1,col})}}
 function kill(b){b.dead=1;burst(b.x,b.y,TC[b.team]);sfx('dmg')}
-function dmg(b,n,src){n=Math.round(n*10)/10;if(src&&n>0)logDmg(src,b,n);b.hp-=n;txt(b.x,b.y-34,'-'+fmtS(n),'#ff4d6d',1);if(b.hp<=0)kill(b)}
+const BUFF={d:0,h:0,t:0};
+function dmg(b,n,src){n=Math.round(n*10)/10;if(src&&n>0&&BUFF.d&&src.team===BUFF.t)n=Math.round(n*(1+BUFF.d)*10)/10;if(src&&n>0)logDmg(src,b,n);b.hp-=n;txt(b.x,b.y-34,'-'+fmtS(n),'#ff4d6d',1);if(b.hp<=0)kill(b)}
 function tf(ok,vk,x0){const dv=ens(vk);
  if(ok=='D')return dv.D;if(ok=='I')return['int:'+vk+'@'+x0];
  if(ok=='J'){const [a,b]=bfX(),cc=r4(defInt(dv.f,a,b));return['cc:'+(isFinite(cc)?cc:0)]}
@@ -952,7 +997,7 @@ const bt=(t,fn,d)=>{const b=mk('button','s'+(d?' dng':''),t);b.onclick=fn;return
 const cf=(t,fn)=>{const b=mk('button','s dng',t);let c=0;b.onclick=()=>{if(c){clearTimeout(c);c=0;b.textContent=t;fn();return}b.textContent='Bấm lần nữa để xác nhận';c=setTimeout(()=>{c=0;b.textContent=t},3000)};return b};
 const ALB={unset:'Chưa hỏi',granted:'✅ Đã cho phép',denied:'⛔ Không cho phép'};
 function openSettings(){if(rc||document.getElementById('stgm'))return;
- const o=mk('div');o.id='stgm';o.innerHTML='<div class="stk"></div><div class="stq"><div class="sth"><b>⚙️ Cài đặt</b></div><div class="stt"></div><div class="stb"></div></div>';
+ const o=mk('div');o.id='stgm';{const r0=o.remove.bind(o);o.remove=()=>{window.hsPark&&hsPark();r0()}}o.innerHTML='<div class="stk"></div><div class="stq"><div class="sth"><b>⚙️ Cài đặt</b></div><div class="stt"></div><div class="stb"></div></div>';
  const x=bt('✕',()=>o.remove());x.setAttribute('aria-label','Đóng');o.querySelector('.sth').appendChild(x);o.querySelector('.stk').onclick=()=>o.remove();
  const tb=o.querySelector('.stt'),bd=o.querySelector('.stb');let cur='snd';
  const T={
@@ -970,13 +1015,8 @@ function openSettings(){if(rc||document.getElementById('stgm'))return;
    c.append(bt('✅ Cho phép',()=>{CFG.album='granted';save();navigator.storage&&navigator.storage.persist&&navigator.storage.persist().catch(()=>{});draw()}),bt('⛔ Không cho phép',()=>{CFG.album='denied';save();draw()}),bt('❓ Hỏi lại',()=>{CFG.album='unset';save();draw()}));
    if(canDir){c.append(bt(dirH?'📁 Đổi thư mục ('+(dirH.name||'')+')':'📁 Chọn thư mục lưu',async()=>{if(await pickDir()){CFG.album='granted';save()}draw()}));if(dirH)c.append(bt('Bỏ thư mục',async()=>{dirH=null;await hPut(null);draw()}))}
    const d=mk('div','sr col'),l=mk('div','sl');l.append(mk('b',null,'Quyền lưu vào album: '+ALB[CFG.album]),mk('small',null,isMob?'Trên điện thoại, video đi vào album qua nút “Lưu vào album” sau khi quay.':'Trên máy tính, có thể chọn thư mục để video tự lưu sau khi quay.'));d.append(l,c);a.push(d);return a}],
-  dat:['💾 Dữ liệu',()=>{const c=mk('div','sbt col');c.append(
-   bt('💾 Lưu cấu hình / ván đang chơi',()=>saveGame()),
-   bt('🗑 Xóa lịch sử ván',()=>{LS.s('dcht_hist',[]);hsUI();toast('Đã xóa lịch sử ván')}),
-   cf('🎞 Xóa hết video đã quay',()=>{const X=$('rcx');X.dataset.c=1;X.onclick()}),
-   cf('♻️ Đặt lại cài đặt game',()=>{resetAll();draw()}),
-   cf('↩ Đặt lại cài đặt ứng dụng này',()=>{Object.assign(CFG,DEF);save();applyAll();draw()}));return [c]}]};
- function draw(){tb.innerHTML='';Object.entries(T).forEach(([k,[t]])=>{const b=bt(t,()=>{cur=k;draw()});b.classList.toggle('on',k==cur);tb.appendChild(b)});bd.innerHTML='';T[cur][1]().forEach(e=>bd.appendChild(e))}
+  dat:['💾 Dữ liệu',()=>{hsUI();const c=mk('div','sbt col');c.append(cf('↩ Đặt lại cài đặt ứng dụng này',()=>{Object.assign(CFG,DEF);save();applyAll();draw()}));return [$('hs'),c]}]};
+ function draw(){window.hsPark&&hsPark();tb.innerHTML='';Object.entries(T).forEach(([k,[t]])=>{const b=bt(t,()=>{cur=k;draw()});b.classList.toggle('on',k==cur);tb.appendChild(b)});bd.innerHTML='';T[cur][1]().forEach(e=>bd.appendChild(e))}
  draw();host().appendChild(o)}
 $('stgo').onclick=$('stg2').onclick=openSettings;
 })();
@@ -1003,6 +1043,7 @@ const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"
 let SRV=localStorage.dc_srv||(/^http/.test(location.protocol)?location.origin:''),TK=localStorage.dc_tk||'',ME=null,FR=[],RQ=[],MT=null,CAP=6,tab='duel',pick={},msg='',dis=0,fg=0,MODE='',CB=null,IA=true,LM='normal',sf='',sc='',lastPh='pick',eb=null,RN=null;
 const call=async(a,b={})=>{if(!SRV)return{err:'Hãy mở game qua máy chủ (địa chỉ .onrender.com).'};try{const r=await fetch(SRV+'/api',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a,t:TK,...b})});return await r.json()}catch(e){return{err:'Không kết nối được máy chủ'}}};
 const ALL=()=>GR.flatMap(g=>g.k),isAdm=()=>!!(ME&&ME.admok),UN=()=>new Set(isAdm()?ALL():ME?ME.un:[]);
+let PS=0;
 const tot=()=>Object.values(pick).reduce((a,b)=>a+b,0),nm=k=>(KD[k]||{}).t||k;
 {const s0=step;let acc=0;step=function(dt){acc+=dt;let n=0;while(acc>=1/60&&n++<8&&phase=='play'){acc-=1/60;s0(1/60)}}}
 const CHP=[
@@ -1019,8 +1060,8 @@ function restoreRN(){if(RN){Math.random=RN;RN=null}}
 function go(seed,mine,theirs,iA,cb,mode){
  let s=seed>>>0;if(!RN)RN=Math.random;Math.random=()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
  MODE=mode;CB=cb;IA=iA;nt=2;at=0;ros=nR();ros[0]=iA?mine:theirs;ros[1]=iA?theirs:mine;ovM=BF[seed%BF.length];ovU=0;$('as').value='10';$('uc').value='';$('uu').value='1';bnotes.length=0;
- build(0);H.style.display='none';O.style.display='none'}
-function leave(){restoreRN();if(eb){eb.remove();eb=null}$('back').onclick()}
+ build(0);setBuff(mode);H.style.display='none';O.style.display='none'}
+function leave(){restoreRN();BUFF.d=BUFF.h=0;if(eb){eb.remove();eb=null}$('back').onclick()}
 function home(){leave();MODE='';CB=null;O.style.display='none';H.style.display='block';paintH()}
 function openO(t){if(t)tab=t;pick={};msg='';H.style.display='block';O.style.display='block';paint();pull()}
 function endBar(w){if(eb)eb.remove();eb=document.createElement('div');eb.style.cssText='position:fixed;left:8px;right:8px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:155;background:rgba(15,15,30,.95);border:1px solid #6d28d9;border-radius:14px;padding:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:#fff';
@@ -1030,14 +1071,93 @@ function endBar(w){if(eb)eb.remove();eb=document.createElement('div');eb.style.c
  if(MODE=='off')B('🔁 Chơi lại',()=>{build(0)});
  else if(MODE=='duel')B('▶ Chơi tiếp',async()=>{leave();dis=MT?MT.id:dis;tab='duel';openO();const r=await call('queue',{mode:LM});msg=r.err||'';await pull()});
  else B('▶ Chơi tiếp',()=>{leave();openO('story')});
- B('🏠 Về trang chủ',home);document.body.append(eb)}
+ B('',home);{const hb=eb.lastChild;hb.className='ib';hb.innerHTML=ICO.home;hb.setAttribute('aria-label','Về trang chủ');hb.title='Về trang chủ';hb.style.cssText='color:#fff;border-color:#6d28d9;background:transparent'}document.body.append(eb)}
 setInterval(()=>{const p=phase;if(p=='over'&&lastPh!='over'){restoreRN();const w=over>0?over-1:-1;endBar(w);if(CB){const c=CB;CB=null;c(w)}}else if(p!='over'&&eb){eb.remove();eb=null}lastPh=p},400);
 const av=(u,z=40)=>`<span style="display:inline-flex;width:${z}px;height:${z}px;border-radius:50%;overflow:hidden;background:#4c1d95;align-items:center;justify-content:center;flex:none">${u&&u.av?`<img src="${E(u.av)}" style="width:100%;height:100%;object-fit:cover">`:'🙂'}</span>`;
 const PK=()=>{const u=UN();return`<div class=m>Đã chọn ${tot()}/${CAP}: `+(Object.entries(pick).map(([k,n])=>`<button class=s data-a=pdec data-k=${k}>✕ ${nm(k)}×${n}</button>`).join(' ')||'—')+`</div><div class=ch>`+ALL().filter(k=>u.has(k)).map(k=>`<button class="chip${pick[k]?' on':''}" style="--cc:#ffd23f" data-a=padd data-k=${k}>${nm(k)}${pick[k]?`<i>${pick[k]}</i>`:''}</button>`).join('')+'</div>'};
 const row=(u,btn)=>`<div class=row style="align-items:center">${av(u)}<b style="flex:1">${E(u.n)} <small style="color:var(--mut)">@${E(u.u)} · ID ${u.pid}</small></b>${btn}</div>`;
 const coin=(t,n)=>`<span style="display:inline-flex;align-items:center;gap:3px;margin-right:8px"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;font:700 8px sans-serif;color:${t=='MP'?'#334155':'#fff'};background:${t=='MP'?'radial-gradient(circle at 30% 30%,#fff,#cbd5e1 55%,#94a3b8)':'radial-gradient(circle at 30% 30%,#fde68a,#f59e0b 60%,#b45309)'};box-shadow:0 0 0 1px rgba(0,0,0,.25)">${t}</span>${n}</span>`;
-const wal=()=>coin('MP',ME.mp)+coin('MK',ME.mk);
+const wal=()=>coin('MP',ME.mp-CS().spent)+coin('MK',ME.mk);
 const lvl=()=>`Lv ${ME.lv} · ${ME.xp%100}/100 XP · 🏆 ${ME.rp}<br>${wal()}`;
+/* ===== Cốt truyện: nhân vật, lời thoại, buff ===== */
+const CHS={
+ g:{n:'Khải',role:'Thiên tài',e:'🤓',c:'#facc15',d:.20,h:.05,p:120,t:'Bạn thuở nhỏ của bạn, thiên tài toán học.'},
+ l:{n:'Lan',role:'Cô giáo Hình học',e:'👩‍🏫',c:'#34d399',d:0,h:.12,p:150,t:'Giữ vững đội hình, chịu đòn bền bỉ.'},
+ b:{n:'Bảo',role:'Võ sĩ Cấp số',e:'🥋',c:'#fb923c',d:.12,h:0,p:180,t:'Càng đánh càng hăng như cấp số nhân.'},
+ s:{n:'Lão sư Giải tích',role:'Đại sư',e:'🧙',c:'#a78bfa',d:.15,h:.10,p:400,t:'Bậc thầy đạo hàm và tích phân.'}};
+const CK=()=>'dcht_chars_'+(ME?ME.pid:0),CS=()=>{const r=LS.g(CK())||{};return{own:r.own||[],spent:r.spent||0}},pc=x=>Math.round(x*100);
+const BF_=()=>CS().own.reduce((a,k)=>CHS[k]?{d:a.d+CHS[k].d,h:a.h+CHS[k].h}:a,{d:0,h:0}),gO=()=>CS().own.includes('g'),G=(a,b)=>()=>gO()?a:b;
+function setBuff(mode){BUFF.d=BUFF.h=0;if(mode!='story'||!ME)return;const b=BF_();BUFF.d=b.d;BUFF.h=b.h;BUFF.t=IA?0:1;
+ if(b.h){balls.forEach(x=>{if(x.team==BUFF.t){x.hp*=1+b.h;x.mh=x.hp}});init=TC.map((_,t)=>balls.filter(x=>x.team==t).reduce((s,x)=>s+x.hp,0))}
+ if(b.d||b.h)toast('👥 Đồng hành: ⚔ +'+pc(b.d)+'% sát thương · ❤ +'+pc(b.h)+'% máu',3500)}
+const MN=[
+ [['Sên Số Không','🐌'],['Ếch Đơn Vị','🐸'],['Nấm Pi','🍄'],['Sóc Hằng Số','🐿️'],['Cú Mèo Phương Trình','🦉'],['Rắn Số Âm','🐍'],['Nhện Chia Đôi','🕷️'],['Gấu Rừng Số','🐻'],['Sói Vô Hạn','🐺'],['Chúa Tể Số Không','👹']],
+ [['Dơi Sin','🦇'],['Dơi Cos','🦇'],['Rết Tan','🐛'],['Bọ Cot','🪲'],['Dơi Song Sinh Sin–Cos','🦇'],['Cá Sóng','🐟'],['Bạch Tuộc Chu Kỳ','🐙'],['Cua Biên Độ','🦀'],['Cá Mập Pha','🦈'],['Rồng Sóng Vô Tận','🐉']]
+].map(a=>a.map(([n,e])=>({n,e})));
+const mon=(c,j)=>MN[c][j];
+const SC=[{
+ intro:[['n','Ở làng Hằng Số, {n} và Khải lớn lên bên nhau từ thuở nhỏ.'],['g','Nhớ hồi bé không, {n}? Tớ giải xong cả quyển bài tập trước khi cậu tìm thấy cây bút!'],['h','Nhớ chứ. Nhưng hôm nay không phải bài tập đâu, Khải. Các ký hiệu trong rừng đã hoá thành quái vật rồi.'],['g',G('Tớ đi cùng cậu. Sát thương +20%, máu +5%, cứ để tớ tính toán!','Tớ muốn giúp cậu lắm, nhưng cần được mời đã. Ghé 🛒 Cửa hàng, nhân vật đầu tiên chính là tớ đấy!')],['h','Vậy bắt đầu thôi. Chọn đội hình và tiến vào Rừng Hằng Số!']],
+ pre:[
+  [['m','Rì rì… Ai dám vào rừng của ta?'],['h','Chỉ là một con {mn} nhỏ thôi. Tiến lên!'],['g',G('Tớ tính rồi, thắng chắc! Cứ đi đi {n}.','Cậu làm được mà, {n}! Nhớ chọn đội hình thật cân bằng.')]],
+  [['m','Ộp ộp! Đố ngươi qua nổi cái ao này!'],['g','Đừng chủ quan, {n}. Hằng số trông đơn giản nhưng chắn đường rất dai.']],
+  [['m','Pi… pi… pi… Ta là số không tuần hoàn, ngươi đừng hòng đoán!'],['h','Đoán không được thì đánh thẳng vào!']],
+  [['m','Tách! Tách! Hạt dẻ hằng số này nặng lắm đó!'],['g','{n}, bên đó có nhiều con! Đừng để bị bao vây.']],
+  [['m','Hú hú… Đêm nay phương trình sẽ vô nghiệm với ngươi.'],['h','Vậy ta sẽ tự tạo ra nghiệm!']],
+  [['m','Xì… Ta kéo mọi thứ về phía số âm.'],['g','Đừng sợ dấu trừ, {n}. Trừ rồi cũng cộng lại được.']],
+  [['m','Mỗi nhát ta chia đôi sức mạnh của ngươi!'],['h','Chia thì chia, ta sẽ nhân lên lại!']],
+  [['m','Gầm! Rừng này là của ta. Ngươi chỉ là một con số lẻ.'],['g','Cẩn thận, {n}! Con này mạnh hơn mấy con trước nhiều.']],
+  [['n','Tiếng hú vang khắp cánh rừng. Sào huyệt chỉ còn một bước nữa.'],['m','Ta là sói đầu đàn của vô hạn. Ngươi không đếm nổi bầy của ta đâu!'],['h','Vậy ta sẽ chứng minh nó hữu hạn!']],
+  [['n','Giữa rừng sâu, cái bóng khổng lồ của kẻ canh giữ cánh cổng hiện ra.'],['m','Ta là {mn}. Mọi con số rồi sẽ trở về với ta.'],['h','Chính ngươi sai khiến lũ quái vật trong rừng sao? Dừng lại đi!'],['m','Dừng? Ngươi nhân với ta, kết quả cũng chỉ là không!'],['g',G('Đừng tin hắn, {n}. Tớ tính rồi: sức mạnh của chúng ta lớn hơn hắn. Lên nào!','{n}, hắn rất nguy hiểm. Nếu được, hãy mời tớ đi cùng ở Cửa hàng trước khi đánh nhé!')]]],
+ win:[
+  [['h','Xong con đầu tiên. Khởi đầu suôn sẻ!']],[['g','Tốt lắm {n}! Cậu vẫn nhanh như hồi nhỏ.']],[['h','Con số không tuần hoàn cũng có lúc dừng lại.']],[['g','Tớ đã nói mà, giữ đội hình là thắng một nửa.']],[['h','Đêm dài đến mấy cũng có nghiệm.']],[['g','Trừ rồi lại cộng, y như tớ nói đấy.']],[['h','Chia đôi rồi lại nhân lên, vẫn là ta thắng.']],[['g','Gấu lớn cũng không chịu nổi tính toán của cậu!']],[['h','Bầy sói hữu hạn thật rồi. Chỉ còn Chúa Tể thôi.']],
+  [['m','Không… thể nào… Ta là số không, sao lại bị đánh bại…'],['h','Vì ta không chiến đấu một mình.'],['g',G('Cậu thắng rồi, {n}! Đúng như tớ tính. Tớ luôn tin cậu mà.','Cậu thắng rồi, {n}! Giá mà tớ được cùng cậu ra trận. Ghé Cửa hàng mời tớ nhé!')],['n','Cánh cổng Rừng Hằng Số mở ra. Xa xa, tiếng sóng vọng về từ Hang Sóng Lượng Giác…'],['h','Đi thôi. Chương tiếp theo đang chờ.']]]
+},{
+ intro:[['n','Qua Rừng Hằng Số, {n} và Khải đến Hang Sóng Lượng Giác, nơi mọi thứ đều dao động.'],['g','Nghe này, {n}. Sóng ở đây lên xuống đều đặn, chu kỳ 2π. Nắm được nhịp là nắm được trận đấu.'],['h','Khải, cậu vẫn nói chuyện như sách giáo khoa nhỉ.'],['g',G('Vì tớ đang ở bên cậu mà. Lần này cũng không để cậu một mình!','Tớ đang ở bên cậu, nhưng nếu được ra trận cùng thì tốt hơn. Cửa hàng có tớ đó!')],['n','Từ sâu trong hang, một tiếng gầm vang lên, rung cả đồ thị trên vách đá.']],
+ pre:[
+  [['m','Chíp chíp… sin x… lên rồi xuống…'],['g','Nó đi theo sóng sin. Đoán được nhịp là né được!']],
+  [['m','Cos x lệch pha với sin một phần tư chu kỳ đấy!'],['h','Lệch pha? Ta đánh lúc nó không ngờ tới!']],
+  [['m','Tan x… Ta lao thẳng lên vô cực!'],['g','Coi chừng, {n}! Tan có những chỗ không xác định, đừng đứng gần đó.']],
+  [['m','Cot x… Ta đi ngược chiều với Tan!'],['h','Ngược chiều thì ta chặn đầu!']],
+  [['m','Hai ta hợp lại: sin² cộng cos² luôn bằng một!'],['g','Đẳng thức quen thuộc đấy! Nhưng cậu mạnh hơn nhiều, {n}.']],
+  [['m','Bơi theo sóng đi nào, càng sâu càng khó thoát.'],['h','Ta không thoát, ta sẽ vượt sóng!']],
+  [['m','Tám chân, tám chu kỳ. Ngươi đếm kịp không?'],['g','Đừng cố đếm! Nhìn chu kỳ chung là được.']],
+  [['m','Biên độ của ta lớn nhất hang này!'],['h','Biên độ lớn thì đỉnh cao, đánh trúng là đau.']],
+  [['m','Pha của ta thay đổi theo từng nhịp bơi!'],['g','{n}, sắp tới nơi rồi! Sau nó là Rồng Sóng. Giữ sức nhé.']],
+  [['n','Cuối hang, một con rồng bơi giữa những đường sin khổng lồ.'],['m','Ta là {mn}. Mọi sóng đều bắt nguồn từ ta, và sẽ không bao giờ dừng.'],['h','Vậy hôm nay ta sẽ dừng sóng của ngươi!'],['m','Ha ha ha! Sóng không bao giờ tắt, chỉ lệch pha thôi.'],['g',G('{n}, tớ tìm ra quy luật của nó rồi! Bên cậu, tớ không sợ gì cả. Lên!','{n}, đây là đối thủ mạnh nhất từ trước tới giờ. Chuẩn bị thật kỹ, tốt nhất mời thêm đồng đội trước khi đánh!')]]],
+ win:[
+  [['h','Nhịp sin cũng có điểm yếu.']],[['g','Lệch pha thì lệch pha, cậu vẫn tính trước một bước!']],[['h','Tan lao lên vô cực, nhưng ta vẫn đứng vững.']],[['g','Đẹp! Cậu chặn đầu đúng chỗ.']],[['h','Sin bình phương cộng cos bình phương, chốt hạ!']],[['g','Không phải ai cũng vượt được sóng như cậu.']],[['h','Chu kỳ chung, tìm ra rồi!']],[['g','Đỉnh cao đến mấy cũng bị cậu hạ.']],[['h','Chỉ còn Rồng Sóng thôi.']],
+  [['m','Sóng… ngừng rồi sao… Không thể nào…'],['h','Mọi sóng đều có lúc lặng, chỉ cần tìm đúng nhịp.'],['g',G('Tớ biết cậu làm được mà, {n}! Hai ta đúng là đội mạnh nhất.','Cậu làm được rồi, {n}! Lần sau hãy mời tớ đi cùng nhé.')],['n','Hang Sóng yên tĩnh. Sâu hơn nữa, hai cánh cổng cổ xưa vẫn bị phong ấn: Thành Dãy Số và Đỉnh Vô Cực.'],['g','Chúng sẽ mở khi chúng ta đủ mạnh. Hẹn cậu ở bản cập nhật tới, {n}!'],['h','Hẹn gặp lại. Cuộc phiêu lưu vẫn chưa kết thúc.']]]
+}];
+const SCX=(c,j)=>{const m=mon(c,j);return{mn:m.n,me:m.e,boss:j==9,end:'Vào trận ⚔'}};
+const preL=(c,j)=>[...(j==0?SC[c].intro:[]),...SC[c].pre[j]],winL=(c,j)=>SC[c].win[j],
+ loseL=(c,j)=>[...(j==9?[['m','Ha ha ha! Chỉ có thế thôi sao?']]:[]),['h','Chưa được… Phải đổi đội hình thôi.'],['g',G('Đừng nản, {n}. Tớ đã ghi lại điểm yếu của chúng, thử lại nhé!','Đừng nản, {n}. Thử đổi đội hình, hoặc mời thêm đồng đội ở Cửa hàng nhé!')]];
+const DLG=document.createElement('div');DLG.id='dlg';DLG.hidden=true;document.body.append(DLG);
+const spk=(k,x)=>k=='h'?{n:ME?ME.n:'Bạn',r:'Nhân vật chính',e:'🧑‍🎓',c:'#60a5fa',img:ME&&ME.av}:k=='g'?{n:CHS.g.n,r:'Thiên tài',e:CHS.g.e,c:CHS.g.c}:k=='m'?{n:x.mn,r:x.boss?'👑 BOSS':'Quái vật',e:x.me,c:x.boss?'#ef4444':'#f87171'}:null;
+function playScene(lines,ctx,done){
+ if(!lines||!lines.length){done&&done();return}
+ let i=0,tm=0,full='';const cast=['h'];if(lines.some(l=>l[0]=='g'))cast.push('g');if(lines.some(l=>l[0]=='m'))cast.push('m');
+ DLG.hidden=false;
+ DLG.innerHTML=`<div class="dlk"></div><div class="dls">${cast.map(k=>{const s=spk(k,ctx);return`<div class="dlp" data-k="${k}" style="--pc:${s.c}"><div class="dla">${s.img?`<img src="${E(s.img)}" alt="">`:s.e}</div><b>${E(s.n)}</b><small>${E(s.r)}</small></div>`}).join('')}</div><div class="dlb"><div class="dln"></div><div class="dlt"></div><div class="dlf"><button class="s dlsk">Bỏ qua ⏭</button><span class="dlc"></span><button class="b dlnx">Tiếp ▶</button></div></div>`;
+ const q=s=>DLG.querySelector(s),nE=q('.dln'),tx=q('.dlt'),cn=q('.dlc'),nx=q('.dlnx');
+ const end=()=>{clearInterval(tm);DLG.hidden=true;DLG.innerHTML='';done&&done()};
+ const show=()=>{const [k,t]=lines[i],s=spk(k,ctx);let x=typeof t=='function'?t():t;x=x.replace(/\{n\}/g,ME?ME.n:'bạn').replace(/\{mn\}/g,ctx.mn);full=x;
+  DLG.querySelectorAll('.dlp').forEach(p=>p.classList.toggle('on',p.dataset.k==k));
+  nE.textContent=s?s.n:'';nE.style.color=s?s.c:'';nE.style.display=s?'':'none';tx.className='dlt'+(s?'':' nar');cn.textContent=(i+1)+'/'+lines.length;nx.textContent=i==lines.length-1?(ctx.end||'Tiếp tục'):'Tiếp ▶';
+  let p=0;tx.textContent='';clearInterval(tm);tm=setInterval(()=>{p+=2;tx.textContent=full.slice(0,p);if(p>=full.length)clearInterval(tm)},20)};
+ const adv=()=>{if(tx.textContent.length<full.length){clearInterval(tm);tx.textContent=full;return}if(++i>=lines.length)end();else show()};
+ nx.onclick=adv;q('.dlk').onclick=adv;tx.onclick=adv;q('.dlsk').onclick=end;show()}
+const cmv=(k,on)=>`<span class="cmv${on?'':' off'}" style="--pc:${CHS[k].c}" title="${CHS[k].n}">${CHS[k].e}</span>`;
+const bchips=(d,h)=>(d?`<span class=bch>⚔ +${pc(d)}% ST</span> `:'')+(h?`<span class=bch>❤ +${pc(h)}% máu</span>`:'');
+const stBuff=()=>{const cs=CS(),b=BF_();return`<div class=g><h3>👥 Đội đồng hành</h3><div class=bfp><span class=cmp>${Object.keys(CHS).map(k=>cmv(k,cs.own.includes(k))).join('')}</span><span class=bch>⚔ +${pc(b.d)}% ST</span><span class=bch>❤ +${pc(b.h)}% máu</span></div>`+(gO()?'':`<div class=m style="margin:8px 0 6px">${CHS.g.e} <b>Khải</b> (thiên tài, +20% ST, +5% máu) đang chờ bạn ở cửa hàng.</div><button class=s data-a=shop>🛒 Mời Khải đồng hành</button>`)+'</div>'};
+const chShop=()=>{const cs=CS();return`<div class=g><h3>👥 Nhân vật đồng hành</h3><div class=m>Mua để nhận buff trong chế độ Cốt truyện. Buff của các nhân vật cộng dồn.</div><div class=m>${wal()}</div>`+Object.entries(CHS).map(([k,c])=>{const own=cs.own.includes(k);return`<div class=row style="align-items:center;gap:10px;flex-wrap:nowrap">${cmv(k,1)}<span style="flex:1;min-width:0"><b>${c.n}</b> <small class=m>${c.role}</small><br>${bchips(c.d,c.h)}<br><small class=m>${c.t}</small></span>`+(own?'<span class=m>✓ Đã có</span>':`<button class=s data-a=cbuy data-k=${k}>${coin('MP',c.p)}</button>`)+'</div>'}).join('')+'</div>'};
+const stStory=()=>{const c=Math.min(CH,1),done=Math.max(0,Math.min(10,ME.st-c*10)),M0=['🌲','🦇'];
+ return stBuff()+`<div class=g><h3>📜 Cốt truyện</h3><div class=row style="overflow-x:auto;flex-wrap:nowrap">${CHP.map((x,i)=>i>=2?`<button class="s lk" data-a=ch data-k=${i} style="flex:none">🔒 ${i+1}. ${x.n}</button>`:`<button class="s${i==c?' on':''}" data-a=ch data-k=${i} style="flex:none">${i*10>ME.st?'🔒 ':''}${i+1}. ${x.n}</button>`).join('')}</div>`
+ +`<div class=sm-h><span class=sm-e>${M0[c]}</span><span style="flex:1"><b>${CHP[c].n}</b><small class=m style="display:block;margin:2px 0 4px">${CHP[c].t}</small><span class=sm-pg><i style="width:${done*10}%"></i></span><small class=m>${done}/10 màn${done==10?' · 🏁 Hoàn thành':''}</small></span></div>`
+ +(tot()?'':'<div class=m>👇 Chọn đội hình ở cuối trang rồi bấm ⚔ ở màn muốn đánh.</div>')
+ +'<div class=sm-l>'+Array.from({length:10},(_,j)=>{const i=c*10+j,e=enemy(c,j),ok=i<=ME.st,dn=ME.st>i,cur=i==ME.st,bs=j==9,m=mon(c,j);
+  return`<div class="sm-n${dn?' done':''}${cur?' cur':''}${ok?'':' lock'}${bs?' boss':''}"><span class=sm-b>${m.e}<i>${dn?'✓':ok?'':'🔒'}</i></span><span class=sm-t><b>${bs?'👑 BOSS · ':'Màn '+(j+1)+' · '}${m.n}</b><small>${LV(j)} · ${Object.entries(e).map(([k,n])=>nm(k)+'×'+n).join(', ')}</small><small>${coin('MP',MPR(c,j))}</small></span>`+(ok?`<button class="${cur?'b':'s'}" data-a=stage data-k=${j}>${dn?'🔁':'⚔'}</button>`:'')+'</div>'}).join('')+'</div>'
+ +'<div class=m style="margin-top:8px">🔒 Chương 3–4 (Thành Dãy Số, Đỉnh Vô Cực) sẽ mở ở bản cập nhật sau.</div>'
+ +'<div class=m>Chọn đội hình:</div>'+PK()+'</div>'};
 const V={
 prof:()=>`<div class=g><h3>👤 Hồ sơ</h3><div class=row style="align-items:center">${av(ME,64)}<button class=s data-a=avp>📷 Chọn ảnh từ album</button></div><div class=m>ID: <b>${ME.pid}</b> · Đăng nhập: <b>@${E(ME.u)}</b><br>${lvl()}</div><div class=row><input id=nm class=s value="${E(ME.n)}" maxlength=20 style="flex:1" placeholder="Tên hiển thị"><button class=s data-a=name>Lưu tên</button></div><button class="s dng" data-a=out>Đăng xuất</button></div>`,
 fr:()=>`<div class=g><h3>👥 Bạn bè</h3><div class=row><input id=fu class=s placeholder="ID hoặc tên đăng nhập" style="flex:1"><button class=s data-a=fadd>Kết bạn</button></div>`+(RQ.length?'<div class=m>Lời mời đến:</div>'+RQ.map(u=>row(u,`<button class=b style="flex:none" data-a=facc data-k=${u.u}>Chấp nhận</button>`)).join(''):'')+(FR.length?FR.map(u=>row(u,'')).join(''):'<div class=m>Chưa có bạn bè.</div>')+'</div>',
@@ -1047,14 +1167,15 @@ duel:()=>{const m=MT;let h='<div class=g><h3>⚔ Online</h3><div class=m>Mỗi b
  else if(m.st=='ready')h+='<div class=m>Cả hai đã chốt, trận sắp bắt đầu…</div>';
  else{const win=m.w==-1?'Hòa':((m.w==0)==m.A?'🏆 Bạn thắng!':'Bạn thua');h+=`<div class=m><b>${win}</b> trước ${E(m.opp.n)}</div><button class=b style="width:100%" data-a=dis>Trận mới</button>`}
  return h+'</div>'},
-story:()=>{const c=CH;return`<div class=g><h3>📜 Cốt truyện</h3><div class=row style="overflow-x:auto;flex-wrap:nowrap">${CHP.map((x,i)=>`<button class="s${i==c?' on':''}" data-a=ch data-k=${i} style="flex:none">${i*10>ME.st?'🔒 ':''}${i+1}. ${x.n}</button>`).join('')}</div><div class=m>${CHP[c].t} Màn 1-4 dễ, 5-8 trung bình, 9-10 rất khó nhưng vẫn vượt được bằng chiến thuật.</div>`+Array.from({length:10},(_,j)=>{const i=c*10+j,e=enemy(c,j),ok=i<=ME.st;return`<div class=row style="align-items:center;opacity:${ok?1:.45}"><b style="min-width:62px">Màn ${j+1}</b><span class=m style="flex:1;margin:0">${LV(j)} · ${Object.entries(e).map(([k,n])=>nm(k)+'×'+n).join(', ')}<br>${coin('MP',MPR(c,j))}</span>`+(ok?`<button class=s data-a=stage data-k=${j}>${ME.st>i?'🔁':'⚔'}</button>`:'🔒')+'</div>'}).join('')+'<div class=m>Chọn đội hình:</div>'+PK()+'</div>'},
+story:()=>stStory(),
 shop:()=>{const u=new Set(ME.un),adm=isAdm();return`<div class=g><h3>🛒 Cửa hàng ký hiệu</h3><div class=m>Giá theo độ trừu tượng và độ nặng kiến thức. Mua bằng MP (kiếm từ cốt truyện) hoặc MK (nạp).</div><div class=m>${wal()}</div>`+(PRC?GR.map(g=>`<div class=oh style="color:${g.c}">${g.n}</div>`+g.k.map(k=>{const p=PRC.p[k];if(p==null)return'';const own=adm||u.has(k);return`<div class=row style="align-items:center"><b style="min-width:54px;font:italic 19px 'Times New Roman',serif">${nm(k)}</b><span class=m style="flex:1;margin:0">${tier(p)}</span>`+(own?'<span class=m>✓ Đã có</span>':`<button class=s data-a=buy data-k=${k} data-c=mp>${coin('MP',p)}</button><button class=s data-a=buy data-k=${k} data-c=mk>${coin('MK',Math.ceil(p/PRC.r))}</button>`)+'</div>'}).join('')).join(''):'<div class=m>Đang tải…</div>')+'</div>'},
 topup:()=>{const o=ME.ord,R=PRC?PRC.rate:1000;return`<div class=g><h3>💎 Nạp MK</h3><div class=m>${wal()}<br>1 MK = ${R.toLocaleString('vi-VN')}đ. Chuyển khoản đúng số tiền và nội dung, MK tự cộng sau khi ngân hàng báo có.</div>`+(o?`<div class=m style="text-align:center"><img src="${E(o.qr)}" style="width:100%;max-width:300px;border-radius:12px;background:#fff"><br>Số tiền: <b>${o.amt.toLocaleString('vi-VN')}đ</b><br>Nội dung: <b>${E(o.code)}</b><br>Đang chờ thanh toán…</div>`:`<div class=row>${[10000,20000,50000,100000].map(n=>`<button class=s data-a=topup data-k=${n}>${n/1000}K</button>`).join('')}</div>`)+'</div>'},
 lib:()=>{const u=UN();return'<div class=g><h3>📚 Thư viện ký hiệu</h3><div class=m>🔒 = chưa mở khoá.</div>'+GR.map(g=>`<div class=oh style="color:${g.c}">${g.n}</div>`+g.k.map(k=>{const d=KD[k];let dm='';try{dm=OPV[k]?OPV[k]+' (đấu toán tử)':dmgOf(k,3)}catch(e){}return`<div class=row style="align-items:center;opacity:${u.has(k)?1:.45}"><b style="min-width:60px;font:italic 19px 'Times New Roman',serif">${d.t}</b><span class=m style="margin:0;flex:1">${u.has(k)?'':'🔒 '}HP ${d.op?200:80} · ST ${dm}${d.r&&d.r!='…'?' · f′ = '+d.r:''}</span></div>`}).join('')).join('')+'</div>'},
 adm:()=>`<div class=g><h3>🔑 Mã quản trị</h3>`+(isAdm()?'<div class=m>✅ Đang kích hoạt: dùng được mọi ký hiệu.</div>':'<div class=m>Nhập mã do quản trị viên cấp.</div>')+`<div class=row><input id=ac class=s type=password placeholder="Mã quản trị" style="flex:1"><button class=s data-a=adm>Kích hoạt</button></div></div>`};
+{const s0=V.shop;V.shop=()=>chShop()+s0()}
 function paint(f){if(O.style.display=='none')return;if(!f&&document.activeElement&&O.contains(document.activeElement)&&/INPUT/.test(document.activeElement.tagName))return;
  const T=[['duel','⚔ Online'],['fr','👥 Bạn bè'],['story','📜 Cốt truyện'],['shop','🛒 Cửa hàng'],['topup','💎 Nạp MK'],['lib','📚 Thư viện'],['adm','🔑 Mã QT'],['prof','👤 Hồ sơ']];
- let h='<div class=row style="align-items:center"><b style="flex:1;font-size:18px">🌐 Chơi Online</b><button class=s data-a=x>🏠 Trang chủ</button></div>';
+ let h='<div class=row style="align-items:center"><b style="flex:1;font-size:18px">🌐 Chơi Online</b><button class="s ib sm" data-a=x aria-label="Trang chủ" title="Trang chủ">'+ICO.home+'</button></div>';
  if(ME)h+='<div class=row style="overflow-x:auto;flex-wrap:nowrap">'+T.map(([k,l])=>`<button class="s${k==tab?' on':''}" data-a=tab data-k=${k} style="flex:none">${l}</button>`).join('')+'</div>'+V[tab]();
  O.innerHTML=h+`<div style="color:#ff4d6d;font-size:13px;min-height:18px;margin-top:6px">${E(msg)}</div>`}
 const IN='width:100%;box-sizing:border-box;margin-bottom:8px;padding:12px;font-size:16px;border-radius:10px;border:1px solid #6d28d9;background:#1e1b4b;color:#fff';
@@ -1062,8 +1183,9 @@ const BTN='width:100%;padding:16px;font-size:18px;font-weight:700;border-radius:
 const TTL='<div style="text-align:center;padding:6vh 16px 16px"><div style="font:italic 700 64px \'Times New Roman\',serif">d/dx</div><h1 style="margin:6px 0 0;font-size:26px;letter-spacing:1px">ĐẠI CHIẾN KÝ HIỆU TOÁN</h1></div>';
 function paintH(f){if(H.style.display=='none')return;if(!f&&document.activeElement&&H.contains(document.activeElement)&&/INPUT/.test(document.activeElement.tagName))return;let h;
  if(!ME)h=TTL+`<div style="padding:0 24px;max-width:420px;margin:auto"><input id=lu placeholder="Tên đăng nhập" autocapitalize=none style="${IN}"><input id=lp type=password placeholder="Mật khẩu" style="${IN}"><button data-a=login style="${BTN};background:#7c3aed">Đăng nhập</button><button data-a=reg style="${BTN};background:#312e81">Tạo tài khoản</button><div style="color:#fca5a5;min-height:18px;font-size:13px">${E(msg)}</div></div>`;
+ else if(PS)h=`<div style="padding:8vh 24px 0;max-width:420px;margin:auto;text-align:center"><b style="font-size:20px">Thông tin của bạn</b><div style="margin:14px 0">${av(ME,92)}</div><button data-a=avp style="${BTN};background:#312e81">📷 Chọn ảnh từ album</button><div style="opacity:.8;font-size:13px;margin-bottom:8px">ID: ${ME.pid} · @${E(ME.u)}</div><input id=hn value="${E(ME.n)}" maxlength=20 placeholder="Tên hiển thị" style="${IN}"><button data-a=cont style="${BTN};background:#7c3aed">Tiếp tục ▶</button><div style="color:#fca5a5;min-height:18px;font-size:13px">${E(msg)}</div></div>`;
  else if(!ME.init)h=TTL+`<div style="padding:0 24px;max-width:420px;margin:auto"><b>Chọn 1 hàm số khởi đầu</b><div class=ch>${['p1','p2','sin','cos'].map(k=>`<button class="chip${sf==k?' on':''}" style="--cc:#c78bff" data-a=sf data-k=${k}>${nm(k)}</button>`).join('')}</div><b>Chọn 1 hằng số khởi đầu</b><div class=ch>${['p0','pi'].map(k=>`<button class="chip${sc==k?' on':''}" style="--cc:#d8dde6" data-a=sc data-k=${k}>${nm(k)}</button>`).join('')}</div><button data-a=give style="${BTN};background:#7c3aed;margin-top:12px">Nhận ký hiệu</button><div style="color:#fca5a5;min-height:18px;font-size:13px">${E(msg)}</div></div>`;
- else h=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px"><div data-a=prof style="display:flex;gap:10px;align-items:center">${av(ME,48)}<div><b>${E(ME.n)}</b><div style="font-size:12px;opacity:.8">ID ${ME.pid} · Lv ${ME.lv}</div><div style="margin-top:3px;font-size:12px">${wal()}</div></div></div><button data-a=set style="font-size:24px;background:none;border:0;color:#fff">⚙️</button></div>${TTL}<div style="padding:0 24px;max-width:420px;margin:auto"><button data-a=online style="${BTN};background:#7c3aed">🌐 Chơi Online</button><button data-a=offline style="${BTN};background:#312e81">📴 Chơi Offline</button><div style="color:#fca5a5;min-height:18px;font-size:13px">${E(msg)}</div></div>`;
+ else h=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px"><div data-a=prof style="display:flex;gap:10px;align-items:center">${av(ME,48)}<div><b>${E(ME.n)}</b><div style="font-size:12px;opacity:.8">ID ${ME.pid}</div></div></div><button data-a=set style="font-size:24px;background:none;border:0;color:#fff">⚙️</button></div><div style="margin:0 12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;gap:10px"><div><b>Lv ${ME.lv}</b><div style="width:110px;height:6px;border-radius:3px;background:rgba(255,255,255,.25);margin:4px 0"><div style="width:${ME.xp%100}%;height:100%;border-radius:3px;background:#a78bfa"></div></div><small>${ME.xp%100}/100 XP</small></div><div style="text-align:right">${wal()}</div></div>${TTL}<div style="padding:0 24px;max-width:420px;margin:auto"><button data-a=online style="${BTN};background:#7c3aed">🌐 Chơi Online</button><button data-a=offline style="${BTN};background:#312e81">📴 Chơi Offline</button><button data-a=shop style="${BTN};background:#4c1d95">🛒 Cửa hàng</button><div style="color:#fca5a5;min-height:18px;font-size:13px">${E(msg)}</div></div>`;
  H.innerHTML=h}
 const F=document.createElement('input');F.type='file';F.accept='image/*';F.hidden=1;
 F.onchange=()=>{const f=F.files[0];if(!f)return;const im=new Image;im.onload=async()=>{const c=document.createElement('canvas');c.width=c.height=96;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,96,96);const r=await call('av',{d:c.toDataURL('image/jpeg',.7)});msg=r.err||'Đã đổi ảnh';await pull();paint();paintH()};im.src=URL.createObjectURL(f);F.value=''};
@@ -1076,12 +1198,14 @@ async function act(a,k,v,c){
  if(a=='tab'){tab=k;pick={}}
  else if(a=='padd'){if(tot()<CAP)pick[k]=(pick[k]||0)+1;else msg='Tối đa '+CAP+' quân'}
  else if(a=='pdec'){if(--pick[k]<=0)delete pick[k]}
- else if(a=='login'||a=='reg'){const r=await call(a,{u:v('lu'),p:v('lp')});if(r.err)msg=r.err;else{msg='';TK=r.t;localStorage.dc_tk=TK;await pull()}}
- else if(a=='out'){TK='';ME=null;localStorage.dc_tk='';O.style.display='none';H.style.display='block'}
+ else if(a=='login'||a=='reg'){const r=await call(a,{u:v('lu'),p:v('lp')});if(r.err)msg=r.err;else{msg='';TK=r.t;localStorage.dc_tk=TK;PS=1;await pull()}}
+ else if(a=='out'){PS=0;TK='';ME=null;localStorage.dc_tk='';O.style.display='none';H.style.display='block'}
+ else if(a=='cont'){const nv=v('hn').trim();if(nv&&nv!=ME.n){const r=await call('name',{n:nv});if(r.err){msg=r.err;paintH(1);return}}msg='';PS=0;await pull()}
+ else if(a=='shop'){openO('shop');return}
  else if(a=='sf'){sf=k}else if(a=='sc'){sc=k}
  else if(a=='give'){if(!sf||!sc)msg='Hãy chọn đủ 1 hàm số và 1 hằng số';else{const r=await call('starter',{f:sf,c:sc});msg=r.err||'';await pull()}}
  else if(a=='prof'){openO('prof');return}
- else if(a=='set'){openSettings();return}
+ else if(a=='set'){$('stgo').click();return}
  else if(a=='online'){openO('duel');return}
  else if(a=='offline'){restoreRN();MODE='off';CB=null;H.style.display='none';toast('Offline: chỉ dùng ký hiệu đã mở khoá',3000);return}
  else if(a=='name'){const r=await call('name',{n:v('nm')});msg=r.err||'Đã đổi tên';await pull()}
@@ -1093,18 +1217,30 @@ async function act(a,k,v,c){
  else if(a=='submit'){const r=await call('pick',{id:MT.id,ro:pick});msg=r.err||'';if(!r.err)pick={};await pull()}
  else if(a=='dis'){dis=MT.id;MT=null}
  else if(a=='adm'){const h=HH(v('ac').trim().toUpperCase());await call('prog',{adm:h});await pull();if(ME.admok)msg='✅ Đã mở khoá toàn bộ ký hiệu';else{await call('prog',{adm:''});await pull();msg='Mã không đúng, đã bị thu hồi hoặc hết hạn'}}
- else if(a=='ch'){CH=+k}
- else if(a=='buy'){const r=await call('buy',{k,cur:c});msg=r.err||('Đã mua '+nm(k));await pull()}
+ else if(a=='ch'){if(+k>=2){msg='🔒 Chương này sẽ mở ở bản cập nhật sau';toast(msg)}else CH=+k}
+ else if(a=='cbuy'){const c0=CHS[k],s=CS();if(c0&&!s.own.includes(k)){if(ME.mp-s.spent<c0.p){msg='Không đủ MP (cần '+c0.p+')';toast(msg)}else{s.own.push(k);s.spent+=c0.p;LS.s(CK(),s);msg='';toast('🎉 '+c0.n+' đã gia nhập đội!',3000)}}}
+ else if(a=='buy'){if(c=='mp'&&PRC&&PRC.p[k]>ME.mp-CS().spent){msg='Không đủ MP';paint(1);return}const r=await call('buy',{k,cur:c});msg=r.err||('Đã mua '+nm(k));await pull()}
  else if(a=='topup'){const r=await call('topup',{amount:+k});msg=r.err||'';await pull()}
- else if(a=='stage'){const jj=+k,i=CH*10+jj;if(i>ME.st)msg='Hãy vượt màn trước';else if(!tot())msg='Hãy chọn đội hình trước';else{const mine={...pick};go(i*977+13,mine,enemy(CH,jj),true,async w=>{if(w==0){const r=await call('clear',{i});toast(r.err||('🎉 Thắng! +'+r.mp+' MP · +'+r.xp+' XP'),4000)}else toast('Chưa thắng, thử đội hình khác');pull()},'story');return}}
+ else if(a=='stage'){const jj=+k,i=CH*10+jj;if(CH>=2)msg='🔒 Chương này sẽ mở ở bản cập nhật sau';else if(i>ME.st)msg='Hãy vượt màn trước';else if(!tot())msg='Hãy chọn đội hình trước';else{const mine={...pick},ch=CH,cl=ME.st>i,cx=SCX(ch,jj);
+  const run=()=>go(i*977+13,mine,enemy(ch,jj),true,async w=>{if(w==0){const r=await call('clear',{i});toast(r.err||('🎉 Thắng! +'+r.mp+' MP · +'+r.xp+' XP'),4000)}else toast('Chưa thắng, thử đội hình khác');pull();if(!cl)playScene(w==0?winL(ch,jj):loseL(ch,jj),{...cx,end:'Tiếp tục'})},'story');
+  if(cl)run();else playScene(preL(ch,jj),cx,run);return}if(msg)toast(msg)}
  paint(1);paintH(1)}
 const hd=e=>{const b=e.target.closest('[data-a]');if(!b)return;msg='';act(b.dataset.a,b.dataset.k,id=>($(id)||{}).value||'',b.dataset.c)};
 O.onclick=hd;H.onclick=hd;
-{const g0=$('go').onclick;$('go').onclick=e=>{restoreRN();const u=UN(),bad=[...new Set(ros.slice(0,nt).flatMap(r=>Object.keys(r)))].filter(k=>!u.has(k));if(bad.length){$('err').textContent='Chưa mở khoá: '+bad.map(nm).join(', ');return}MODE='off';CB=null;g0(e)}}
-const HB=document.createElement('button');HB.className='launch';HB.style.setProperty('--tc','#8b5cf6');HB.innerHTML='<span class="lg">🏠</span><span class="lt"><b>Về trang chủ</b><small>Quay lại màn hình chính</small></span><span class="lc">Mở</span>';HB.onclick=home;$('pick').prepend(HB);
+{const g0=$('go').onclick;$('go').onclick=e=>{restoreRN();const u=UN(),bad=[...new Set(ros.slice(0,nt).flatMap(r=>Object.keys(r)))].filter(k=>!u.has(k));if(bad.length){$('err').textContent='Chưa mở khoá: '+bad.map(nm).join(', ');return}MODE='off';CB=null;BUFF.d=BUFF.h=0;g0(e)}}
+const HB=document.createElement('button');HB.className='ib';HB.id='hmo';HB.style.setProperty('--tc','#8b5cf6');HB.setAttribute('aria-label','Về trang chủ');HB.title='Về trang chủ';HB.innerHTML=ICO.home;HB.onclick=home;$('tbar').prepend(HB);
+const GH=document.createElement('button');GH.className='s ib sm';GH.id='hm2';GH.setAttribute('aria-label','Về trang chủ');GH.title='Về trang chủ';GH.innerHTML=ICO.home;GH.onclick=home;$('stg2').before(GH);
 new MutationObserver(()=>{const m=document.getElementById('stgm');if(!m||m.dataset.p)return;m.dataset.p=1;const t=m.querySelector('.stt');if(!t)return;const b=document.createElement('button');b.className='s';b.textContent='👤 Người chơi';b.onclick=()=>{m.remove();openO('prof')};t.appendChild(b)}).observe(document.body,{childList:true});
 document.body.append(H,O,F);paintH();setInterval(pull,3000);pull();
 })();
 
+</script>
+<script>
+window.hsPark=function(){const p=document.getElementById('hsPark'),h=document.getElementById('hs');if(p&&h&&h.parentNode!==p)p.appendChild(h)};
+(function(){try{
+ const uc=$('uc').parentNode,d=document.createElement('details');d.className='bfd';d.innerHTML='<summary>📏 Tỉ lệ ô lưới</summary>';uc.before(d);d.append(uc);
+ const bx=$('bfa').parentNode,d2=document.createElement('details');d2.className='bfd';d2.innerHTML='<summary>🔀 Tự đổi chiến trường trong trận</summary>';
+ bx.firstElementChild.remove();bx.style.cssText='';bx.before(d2);d2.append(bx);
+}catch(e){console.error(e)}})();
 </script>
 </body></html>
