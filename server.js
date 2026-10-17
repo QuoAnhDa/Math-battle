@@ -5,6 +5,7 @@ let D={u:{},s:{},m:[],q:null};try{D=JSON.parse(fs.readFileSync(DBF,'utf8'))}catc
 D.adm=D.adm||{codes:[]};D.pid=D.pid||100000;const ADMK=process.env.ADMIN_KEY||'';
 const admok=c=>!!c&&D.adm.codes.some(x=>x.h===c&&!x.rv&&(!x.exp||x.exp>Date.now()));
 const PRICE={p0:80,pi:120,p1:80,p2:100,p3:200,p4:300,sin:150,cos:150,tan:300,cot:300,secx:400,cscx:400,asin:700,acos:700,atan:700,acot:700,exp:500,ln:550,inv:450,sqrt:450,abs:400,an:900,csc:900,csn:1000,fib:1000,lim:1400,sig:1100,fac:1000,cmb:1200,arr:1200,mul:900,add:900,sinh:600,cosh:600,flo:600,det:1500,D:800,I:1500,J:1800,V:1500,M:2000,C:1600,S:1700};
+const CHP={g:120,l:150,b:180,s:400};
 const MKP=50,MKR=+process.env.MK_RATE||1000,HOOK=process.env.WEBHOOK_KEY||'',B={bin:process.env.BANK_BIN||'970422',acc:process.env.BANK_ACC||'',name:process.env.BANK_NAME||''};
 D.o=D.o||{};D.tx=D.tx||{};
 const qrUrl=(c,o)=>`https://img.vietqr.io/image/${B.bin}-${B.acc}-compact2.png?amount=${o.amt}&addInfo=${c}&accountName=${encodeURIComponent(B.name)}`;
@@ -32,7 +33,7 @@ process.on('SIGTERM',bye);process.on('SIGINT',bye);setInterval(()=>ghPush(),3000
 const hash=(p,s)=>cr.scryptSync(p,s,32).toString('hex');
 const pidOf=u=>{if(!u.pid)u.pid=++D.pid;return u.pid};
 const pub=id=>{const u=D.u[id];return u?{u:id,n:u.n,av:u.av||'',pid:pidOf(u)}:null};
-const own=u=>({u:u.id,pid:pidOf(u),n:u.n,av:u.av,un:u.un,st:u.st,adm:u.adm,xp:u.xp||0,lv:1+Math.floor((u.xp||0)/100),rp:u.rp||0,mp:u.mp||0,mk:u.mk||0,init:u.init===undefined?(u.un.length?1:0):u.init});
+const own=u=>({u:u.id,pid:pidOf(u),n:u.n,av:u.av,un:u.un,st:u.st,adm:u.adm,xp:u.xp||0,lv:1+Math.floor((u.xp||0)/100),rp:u.rp||0,mp:u.mp||0,mk:u.mk||0,init:u.init===undefined?(u.un.length?1:0):u.init,ch:u.ch||[],sq:u.sq||[]});
 const view=(m,id)=>{const A=m.a==id,my=A?m.pa:m.pb,th=A?m.pb:m.pa;return{id:m.id,st:m.st,A,opp:pub(A?m.b:m.a),mine:my,sent:!!my,theirs:m.st=='pick'?null:th,seed:m.seed,w:m.w,mode:m.mode}};
 const last=id=>[...D.m].reverse().find(m=>m.a==id||m.b==id);
 const busy=id=>{const m=last(id);return m&&m.st!='done'};
@@ -58,6 +59,8 @@ function api(b){
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
   case'buy':{const p=PRICE[b.k];if(p==null)return{err:'Vật phẩm không tồn tại'};if(U.un.includes(b.k))return{err:'Bạn đã sở hữu ký hiệu này'};const cur=b.cur=='mk'?'mk':'mp',cost=cur=='mk'?Math.ceil(p/MKP):p;if((U[cur]||0)<cost)return{err:'Không đủ '+cur.toUpperCase()};U[cur]-=cost;U.un.push(b.k);save();return{ok:1}}
   case'clear':{const i=b.i;if(!Number.isInteger(i)||i<0||i>=40||i>(U.st||0))return{err:'Màn chưa mở'};const c=Math.floor(i/10),j=i%10,first=i==(U.st||0),base=Math.round([10,10,15,20,35,40,45,50,90,120][j]*(1+c*.5)),mp=first?base:Math.max(1,Math.floor(base*.2)),xp=first?20+j*5:5;U.mp=(U.mp||0)+mp;U.xp=(U.xp||0)+xp;if(first)U.st=i+1;save();return{mp,xp}}
+  case'cbuy':{const p=CHP[b.k];if(p==null)return{err:'Nhân vật không tồn tại'};U.ch=U.ch||[];if(U.ch.includes(b.k))return{err:'Bạn đã có nhân vật này'};if((U.mp||0)<p)return{err:'Không đủ MP'};U.mp-=p;U.ch.push(b.k);save();return{ok:1}}
+  case'sqset':{const l=b.l;if(!Array.isArray(l)||l.length>10)return{err:'Tối đa 10 đội hình'};const o=[];for(const q of l){const r=q&&q.r,n=String(q&&q.n||'').trim().slice(0,20);if(!n||!r||typeof r!='object')return{err:'Đội hình không hợp lệ'};let t=0;for(const k in r){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(r[k])||r[k]<1)return{err:'Đội hình không hợp lệ'};t+=r[k]}if(t<1||t>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};o.push({n,r})}U.sq=o;save();return{ok:1}}
   case'topup':{const a=b.amount;if(!B.acc)return{err:'Máy chủ chưa cấu hình tài khoản nhận tiền'};if(!Number.isInteger(a)||a%1000||a<10000||a>5000000)return{err:'Số tiền từ 10.000đ đến 5.000.000đ, chẵn nghìn'};
    for(const x of Object.values(D.o))if(x.u==id&&x.st=='wait')x.st='old';const code='MK'+cr.randomBytes(4).toString('hex').toUpperCase();D.o[code]={u:id,amt:a,st:'wait',ts:Date.now()};save();return{ok:1}}
   case'starter':{if(own(U).init)return{err:'Bạn đã nhận ký hiệu khởi đầu'};if(!['p1','p2','sin','cos'].includes(b.f)||!['p0','pi'].includes(b.c))return{err:'Lựa chọn không hợp lệ'};U.un=[b.f,b.c];U.init=1;save();return{ok:1}}
