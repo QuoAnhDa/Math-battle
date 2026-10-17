@@ -57,6 +57,11 @@ function api(b){
  switch(b.a){
   case'me':{const m=last(id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U)},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,m:m?view(m,id):null}}
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
+  case'top':{ // bảng xếp hạng: top 30 theo điểm xếp hạng + top 30 theo cấp (client tự sắp lại)
+   const all=Object.values(D.u).filter(x=>(x.un&&x.un.length)||x.xp||x.rp).map(x=>({pid:pidOf(x),n:x.n,av:(x.av||'').length>20000?'':(x.av||''),xp:x.xp||0,lv:1+Math.floor((x.xp||0)/100),rp:x.rp||0}));
+   const byR=[...all].sort((p,q)=>q.rp-p.rp||q.xp-p.xp),byL=[...all].sort((p,q)=>q.xp-p.xp||q.rp-p.rp),mp=pidOf(U);
+   const seen=new Set(byR.slice(0,30).map(x=>x.pid)),top=byR.slice(0,30).concat(byL.slice(0,30).filter(x=>!seen.has(x.pid)));
+   return{top,rk:{rp:byR.findIndex(x=>x.pid==mp)+1,lv:byL.findIndex(x=>x.pid==mp)+1,n:all.length}}}
   case'buy':{const p=PRICE[b.k];if(p==null)return{err:'Vật phẩm không tồn tại'};if(U.un.includes(b.k))return{err:'Bạn đã sở hữu ký hiệu này'};const cur=b.cur=='mk'?'mk':'mp',cost=cur=='mk'?Math.ceil(p/MKP):p;if((U[cur]||0)<cost)return{err:'Không đủ '+cur.toUpperCase()};U[cur]-=cost;U.un.push(b.k);save();return{ok:1}}
   case'clear':{const i=b.i;if(!Number.isInteger(i)||i<0||i>=40||i>(U.st||0))return{err:'Màn chưa mở'};const c=Math.floor(i/10),j=i%10,first=i==(U.st||0),base=Math.round([10,10,15,20,35,40,45,50,90,120][j]*(1+c*.5)),mp=first?base:Math.max(1,Math.floor(base*.2)),xp=first?20+j*5:5;U.mp=(U.mp||0)+mp;U.xp=(U.xp||0)+xp;if(first)U.st=i+1;save();return{mp,xp}}
   case'cbuy':{const p=CHP[b.k];if(p==null)return{err:'Nhân vật không tồn tại'};U.ch=U.ch||[];if(U.ch.includes(b.k))return{err:'Bạn đã có nhân vật này'};if((U.mp||0)<p)return{err:'Không đủ MP'};U.mp-=p;U.ch.push(b.k);save();return{ok:1}}
