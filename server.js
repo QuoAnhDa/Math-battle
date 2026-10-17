@@ -38,7 +38,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function ghRestore(){if(!ghOn){console.log('Chưa đặt GH_TOKEN/GH_REPO: dữ liệu chỉ lưu tạm trên máy chủ');return true}
  try{const m=await fetch(ghU()+'?ref='+GH.b,{headers:ghH()});if(m.status==404){console.log('Kho chưa có file dữ liệu, sẽ tạo mới');return true}if(!m.ok)throw new Error('HTTP '+m.status);ghSha=(await m.json()).sha;
   const r=await fetch(ghU()+'?ref='+GH.b,{headers:ghH('application/vnd.github.raw+json')});if(!r.ok)throw new Error('HTTP '+r.status);D=JSON.parse(await r.text());
-  D.u=D.u||{};D.s=D.s||{};D.m=D.m||[];D.adm=D.adm||{codes:[]};D.pid=D.pid||100000;D.o=D.o||{};D.tx=D.tx||{};try{fs.writeFileSync(DBF,JSON.stringify(D))}catch(e){}
+  D.u=D.u||{};D.s=D.s||{};D.m=D.m||[];D.adm=D.adm||{codes:[]};D.pid=D.pid||100000;D.o=D.o||{};D.tx=D.tx||{};D.rm=D.rm||{};D.oc=D.oc||{};D.ocn=D.ocn||Date.now()%1e9;try{fs.writeFileSync(DBF,JSON.stringify(D))}catch(e){}
   console.log('Đã khôi phục dữ liệu từ GitHub');return true}catch(e){console.log('Không khôi phục được dữ liệu:',e.message);return false}}
 async function ghStart(){for(let i=0;i<4;i++){if(await ghRestore())break;if(i==3){console.log('Dừng: không đọc được kho dữ liệu (tránh ghi đè dữ liệu cũ)');process.exit(1)}await sleep(2000)}ghOK=true}
 async function ghPush(force){if(!ghOn||!ghOK||pushing||(!dirty&&!force))return;pushing=1;dirty=0;
@@ -67,7 +67,7 @@ function botFill(id){const w=Q().find(x=>x.id==id),U=D.u[id];if(!w||!U)return;if
 const newM=(a,b,md)=>{const m={ts:Date.now(),mode:md||'normal',id:Date.now()+Math.floor(Math.random()*1e3),a,b,pa:null,pb:null,st:'pick',seed:Math.floor(Math.random()*2147483647),w:null};D.m.push(m);D.m=D.m.slice(-200);return m};
 // ===== Phòng chơi nhiều người (tối đa RMAX, hỗn chiến) =====
 const RMAX=8;D.rm=D.rm||{};
-const rof=id=>Object.values(D.rm).find(r=>r.mem.some(x=>x.u==id)&&Date.now()-r.ts<18e5);
+const rof=id=>Object.values(D.rm=D.rm||{}).find(r=>r.mem.some(x=>x.u==id)&&Date.now()-r.ts<18e5);
 const rview=id=>{const r=rof(id);return r?{id:r.id,host:r.host,st:r.st,seed:r.seed,max:RMAX,mem:r.mem.map(x=>({...pub(x.u),ok:!!x.ro})),rost:r.st=='ready'?r.mem.map(x=>x.ro):null}:null};
 function rleave(id){const r=rof(id);if(!r)return;r.mem=r.mem.filter(x=>x.u!=id);if(!r.mem.length)delete D.rm[r.id];else{if(r.host==id)r.host=r.mem[0].u;if(r.st!='lobby'){r.st='lobby';r.mem.forEach(x=>x.ro=null)}}}
 function api(b){
@@ -87,7 +87,7 @@ function api(b){
  if(!U)return{bad:1,err:'Hãy đăng nhập'};
  U.seen=Date.now();
  switch(b.a){
-  case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U),bk:U.bk?{bank:U.bk.bank,l4:U.bk.l4,name:U.bk.name,st:U.bk.st}:null},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,rm:rview(id),ri:(U.ri||[]).filter(c=>D.rm[c]&&D.rm[c].st=='lobby'),m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
+  case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U),bk:U.bk?{bank:U.bk.bank,l4:U.bk.l4,name:U.bk.name,st:U.bk.st}:null},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,rm:rview(id),ri:(U.ri||[]).filter(c=>(D.rm||{})[c]&&D.rm[c].st=='lobby'),m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
   case'top':{ // bảng xếp hạng: top 30 theo điểm xếp hạng + top 30 theo cấp (client tự sắp lại)
    const all=Object.values(D.u).filter(x=>(x.un&&x.un.length)||x.xp||x.rp).map(x=>({pid:pidOf(x),n:x.n,av:(x.av||'').length>20000?'':(x.av||''),xp:x.xp||0,lv:1+Math.floor((x.xp||0)/100),rp:x.rp||0}));
