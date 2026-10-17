@@ -34,10 +34,19 @@ const hash=(p,s)=>cr.scryptSync(p,s,32).toString('hex');
 const pidOf=u=>{if(!u.pid)u.pid=++D.pid;return u.pid};
 const pub=id=>{const u=D.u[id];return u?{u:id,n:u.n,av:u.av||'',pid:pidOf(u)}:null};
 const own=u=>({u:u.id,pid:pidOf(u),n:u.n,av:u.av,un:u.un,st:u.st,adm:u.adm,xp:u.xp||0,lv:1+Math.floor((u.xp||0)/100),rp:u.rp||0,mp:u.mp||0,mk:u.mk||0,init:u.init===undefined?(u.un.length?1:0):u.init,ch:u.ch||[],sq:u.sq||[]});
-const view=(m,id)=>{const A=m.a==id,my=A?m.pa:m.pb,th=A?m.pb:m.pa;return{id:m.id,st:m.st,A,opp:pub(A?m.b:m.a),mine:my,sent:!!my,theirs:m.st=='pick'?null:th,seed:m.seed,w:m.w,mode:m.mode}};
+const view=(m,id)=>{const A=m.a==id,my=A?m.pa:m.pb,th=A?m.pb:m.pa;return{id:m.id,st:m.st,A,opp:m.bot?{u:'bot',n:m.bot.n,av:'',pid:0,lv:m.bot.lv,bot:1}:pub(A?m.b:m.a),ab:m.ab||0,mine:my,sent:!!my,theirs:m.st=='pick'?null:th,seed:m.seed,w:m.w,mode:m.mode}};
 const last=id=>[...D.m].reverse().find(m=>m.a==id||m.b==id);
-const busy=id=>{const m=last(id);return m&&m.st!='done'};
-const newM=(a,b,md)=>{const m={mode:md||'normal',id:Date.now()+Math.floor(Math.random()*1e3),a,b,pa:null,pb:null,st:'pick',seed:Math.floor(Math.random()*2147483647),w:null};D.m.push(m);D.m=D.m.slice(-200);return m};
+const stale=m=>m.st!='done'&&Date.now()-(m.ts||0)>(m.st=='pick'?18e4:6e5); // trận bỏ dở quá lâu thì coi như đã kết thúc
+const busy=id=>{const m=last(id);return m&&m.st!='done'&&!stale(m)};
+// ===== Ghép trận: ưu tiên người chơi, không có thì ghép bot cùng cấp =====
+const BOT_WAIT=+process.env.BOT_WAIT||0,lvOf=u=>1+Math.floor((u.xp||0)/100),Q=()=>D.qq=D.qq||[];
+const BN=['Số Pi','Hàm Sin','Đạo Hàm','Tích Phân','Ma Trận','Cấp Số','Giai Thừa','Vô Cực','Căn Bậc Hai','Parabol'];
+const rpOk=(a,b)=>Math.abs(a-b)<=0.2*Math.max(a,b); // xếp hạng: lệch tối đa 20%
+// ký hiệu "có được" ở cấp lv: giá ≤ 120+140·(lv-1); số quân tăng dần theo cấp
+const botSquad=lv=>{const cap=120+140*(lv-1),pool=Object.keys(PRICE).filter(k=>PRICE[k]<=cap),n=Math.min(CAP,3+Math.floor(lv/3)),r={};for(let i=0;i<n;i++){const k=pool[Math.floor(Math.random()*pool.length)];r[k]=(r[k]||0)+1}return r};
+function botFill(id){const w=Q().find(x=>x.id==id),U=D.u[id];if(!w||!U)return;if(Date.now()-w.ts<(BOT_WAIT||(w.mode=='rank'?12000:8000)))return;
+ D.qq=Q().filter(x=>x!==w);if(busy(id))return;const lv=lvOf(U),m=newM(id,'bot',w.mode);m.bot={n:'🤖 Bot '+BN[Math.floor(Math.random()*BN.length)],lv};m.pb=botSquad(lv);save()}
+const newM=(a,b,md)=>{const m={ts:Date.now(),mode:md||'normal',id:Date.now()+Math.floor(Math.random()*1e3),a,b,pa:null,pb:null,st:'pick',seed:Math.floor(Math.random()*2147483647),w:null};D.m.push(m);D.m=D.m.slice(-200);return m};
 function api(b){
  const id=D.s[b.t],U=id&&D.u[id];
  if(b.a=='reg'||b.a=='login'){
@@ -55,7 +64,7 @@ function api(b){
  if(!U)return{bad:1,err:'Hãy đăng nhập'};
  U.seen=Date.now();
  switch(b.a){
-  case'me':{const m=last(id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U)},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,m:m?view(m,id):null}}
+  case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U)},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
   case'top':{ // bảng xếp hạng: top 30 theo điểm xếp hạng + top 30 theo cấp (client tự sắp lại)
    const all=Object.values(D.u).filter(x=>(x.un&&x.un.length)||x.xp||x.rp).map(x=>({pid:pidOf(x),n:x.n,av:(x.av||'').length>20000?'':(x.av||''),xp:x.xp||0,lv:1+Math.floor((x.xp||0)/100),rp:x.rp||0}));
@@ -76,11 +85,16 @@ function api(b){
    if(U.rq.includes(t)){U.rq=U.rq.filter(x=>x!=t);U.fr.push(t);T.fr.push(id)}else if(!T.rq.includes(id))T.rq.push(id);save();return{ok:'Đã gửi lời mời'}}
   case'facc':{if(U.rq.includes(b.u)&&D.u[b.u]){U.rq=U.rq.filter(x=>x!=b.u);U.fr.push(b.u);D.u[b.u].fr.push(id);save()}return{ok:1}}
   case'chal':{if(!U.fr.includes(b.to))return{err:'Chỉ thách đấu bạn bè'};if(busy(id)||busy(b.to))return{err:'Một trong hai người đang có trận'};newM(id,b.to);save();return{ok:1}}
-  case'queue':{const md=b.mode=='rank'?'rank':'normal';if(md=='rank'&&own(U).lv<7)return{err:'Cần đạt Lv 7 để chơi xếp hạng'};if(busy(id))return{err:'Bạn đang có trận'};if(!D.q||typeof D.q!='object')D.q={};const q=D.q[md],ok=q&&q!=id&&D.u[q]&&Date.now()-D.u[q].seen<30000&&!busy(q);if(ok){D.q[md]=null;newM(q,id,md)}else D.q[md]=id;save();return{ok:1}}
+  case'queue':{const md=b.mode=='rank'?'rank':'normal';if(md=='rank'&&own(U).lv<7)return{err:'Cần đạt Lv 7 để chơi xếp hạng'};if(busy(id))return{err:'Bạn đang có trận'};
+   const now=Date.now();D.qq=Q().filter(x=>D.u[x.id]&&now-D.u[x.id].seen<15000&&!busy(x.id));
+   if(D.qq.some(x=>x.id==id&&x.mode==md))return{ok:1};D.qq=D.qq.filter(x=>x.id!=id);
+   const cand=D.qq.find(x=>x.mode==md&&(md!='rank'||rpOk(U.rp||0,D.u[x.id].rp||0)));
+   if(cand){D.qq=D.qq.filter(x=>x!==cand);newM(cand.id,id,md)}else D.qq.push({id,mode:md,ts:now});save();return{ok:1}}
+  case'cq':{D.qq=Q().filter(x=>x.id!=id);D.m.forEach(m=>{if(m.st=='pick'&&(m.a==id||m.b==id)){m.st='done';m.w=-1;m.ab=1}});save();return{ok:1}}
   case'pick':{const m=D.m.find(x=>x.id==b.id&&(x.a==id||x.b==id));if(!m||m.st!='pick')return{err:'Trận không còn nhận đội hình'};const ro=b.ro||{};let n=0;
    for(const k in ro){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(ro[k])||ro[k]<1)return{err:'Đội hình không hợp lệ'};n+=ro[k]}
    if(n<1||n>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};
-   if(m.a==id)m.pa=ro;else m.pb=ro;if(m.pa&&m.pb)m.st='ready';save();return{ok:1}}
+   if(m.a==id)m.pa=ro;else m.pb=ro;if(m.pa&&m.pb){m.st='ready';m.ts=Date.now()}save();return{ok:1}}
   case'res':{const m=D.m.find(x=>x.id==b.id&&(x.a==id||x.b==id));if(m&&m.st=='ready'){m.w=[0,1].includes(b.w)?b.w:-1;m.st='done';[[m.a,0],[m.b,1]].forEach(([p,i])=>{const P=D.u[p];if(!P)return;const win=m.w==i,dr=m.w==-1;P.xp=(P.xp||0)+(dr?15:win?(m.mode=='rank'?40:30):10);if(m.mode=='rank')P.rp=Math.max(0,(P.rp||0)+(dr?0:win?25:-15))});save()}return{ok:1}}
  }
  return{err:'?'}}
