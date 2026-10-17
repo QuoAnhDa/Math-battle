@@ -65,6 +65,11 @@ const botSquad=lv=>{const cap=120+140*(lv-1),pool=Object.keys(PRICE).filter(k=>P
 function botFill(id){const w=Q().find(x=>x.id==id),U=D.u[id];if(!w||!U)return;if(Date.now()-w.ts<(BOT_WAIT))return;
  D.qq=Q().filter(x=>x!==w);if(busy(id))return;const lv=lvOf(U),m=newM(id,'bot',w.mode);m.bot={n:botName(),lv,pid:rndPid()};m.pb=botSquad(lv);save()}
 const newM=(a,b,md)=>{const m={ts:Date.now(),mode:md||'normal',id:Date.now()+Math.floor(Math.random()*1e3),a,b,pa:null,pb:null,st:'pick',seed:Math.floor(Math.random()*2147483647),w:null};D.m.push(m);D.m=D.m.slice(-200);return m};
+// ===== Phòng chơi nhiều người (tối đa RMAX, hỗn chiến) =====
+const RMAX=8;D.rm=D.rm||{};
+const rof=id=>Object.values(D.rm).find(r=>r.mem.some(x=>x.u==id)&&Date.now()-r.ts<18e5);
+const rview=id=>{const r=rof(id);return r?{id:r.id,host:r.host,st:r.st,seed:r.seed,max:RMAX,mem:r.mem.map(x=>({...pub(x.u),ok:!!x.ro})),rost:r.st=='ready'?r.mem.map(x=>x.ro):null}:null};
+function rleave(id){const r=rof(id);if(!r)return;r.mem=r.mem.filter(x=>x.u!=id);if(!r.mem.length)delete D.rm[r.id];else{if(r.host==id)r.host=r.mem[0].u;if(r.st!='lobby'){r.st='lobby';r.mem.forEach(x=>x.ro=null)}}}
 function api(b){
  const id=D.s[b.t],U=id&&D.u[id];
  if(b.a=='reg'||b.a=='login'){
@@ -82,7 +87,7 @@ function api(b){
  if(!U)return{bad:1,err:'Hãy đăng nhập'};
  U.seen=Date.now();
  switch(b.a){
-  case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U),bk:U.bk?{bank:U.bk.bank,l4:U.bk.l4,name:U.bk.name,st:U.bk.st}:null},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
+  case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U),bk:U.bk?{bank:U.bk.bank,l4:U.bk.l4,name:U.bk.name,st:U.bk.st}:null},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,rm:rview(id),ri:(U.ri||[]).filter(c=>D.rm[c]&&D.rm[c].st=='lobby'),m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
   case'top':{ // bảng xếp hạng: top 30 theo điểm xếp hạng + top 30 theo cấp (client tự sắp lại)
    const all=Object.values(D.u).filter(x=>(x.un&&x.un.length)||x.xp||x.rp).map(x=>({pid:pidOf(x),n:x.n,av:(x.av||'').length>20000?'':(x.av||''),xp:x.xp||0,lv:1+Math.floor((x.xp||0)/100),rp:x.rp||0}));
@@ -101,7 +106,15 @@ function api(b){
    case'topup':{const a=b.amount;if(!U.bk||U.bk.st!='ok')return{err:'Hãy liên kết tài khoản và chờ chủ tài khoản chấp thuận trước'};if(!Number.isInteger(a)||a%1000||a<10000||a>5000000)return{err:'Số tiền từ 10.000đ đến 5.000.000đ, chẵn nghìn'};
     for(const x of Object.values(D.o))if(x.u==id&&x.st=='wait'&&x.k!='lk')x.st='old';const code='MK'+cr.randomBytes(4).toString('hex').toUpperCase();D.o[code]={u:id,amt:a,st:'wait',ts:Date.now(),k:'mk'};
     providerDebit(code,U.bk,a);save();return{ok:1}}
-  case'starter':{if(own(U).init)return{err:'Bạn đã nhận ký hiệu khởi đầu'};if(!['p1','p2','sin','cos'].includes(b.f)||!['p0','pi'].includes(b.c))return{err:'Lựa chọn không hợp lệ'};U.un=[b.f,b.c];U.init=1;save();return{ok:1}}
+  case'rcreate':{if(rof(id))return{err:'Bạn đang ở trong một phòng'};let c;do{c=String(1000+Math.floor(Math.random()*9000))}while(D.rm[c]);D.rm[c]={id:c,host:id,st:'lobby',mem:[{u:id}],ts:Date.now(),seed:0};save();return{ok:1}}
+   case'rjoin':{const r=D.rm[String(b.c||'').trim()];if(!r||Date.now()-r.ts>=18e5)return{err:'Không tìm thấy phòng'};if(rof(id))return{err:'Bạn đang ở trong một phòng'};if(r.st!='lobby')return{err:'Phòng đang trong trận'};if(r.mem.length>=RMAX)return{err:'Phòng đã đầy'};r.mem.push({u:id});r.ts=Date.now();U.ri=(U.ri||[]).filter(x=>x!=r.id);save();return{ok:1}}
+   case'rinv':{const r=rof(id),T=D.u[b.to];if(!r||r.host!=id)return{err:'Chỉ chủ phòng được mời'};if(!T||!U.fr.includes(b.to))return{err:'Chỉ mời được bạn bè'};T.ri=(T.ri||[]).filter(x=>x!=r.id).concat(r.id).slice(-5);save();return{ok:1}}
+   case'rleave':{rleave(id);save();return{ok:1}}
+   case'rstart':{const r=rof(id);if(!r||r.host!=id)return{err:'Chỉ chủ phòng được bắt đầu'};if(r.mem.length<2)return{err:'Cần ít nhất 2 người'};r.st='pick';r.seed=1+Math.floor(Math.random()*2147483646);r.mem.forEach(x=>x.ro=null);r.ts=Date.now();save();return{ok:1}}
+   case'rpick':{const r=rof(id);if(!r||r.st!='pick')return{err:'Phòng không nhận đội hình'};const ro=b.ro||{};let n=0;for(const k in ro){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(ro[k])||ro[k]<1)return{err:'Đội hình không hợp lệ'};n+=ro[k]}if(n<1||n>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};
+    r.mem.find(x=>x.u==id).ro=ro;if(r.mem.every(x=>x.ro))r.st='ready';r.ts=Date.now();save();return{ok:1}}
+   case'rdone':{const r=rof(id);if(r&&r.st=='ready'){r.st='lobby';r.mem.forEach(x=>x.ro=null);r.ts=Date.now();save()}return{ok:1}}
+   case'starter':{if(own(U).init)return{err:'Bạn đã nhận ký hiệu khởi đầu'};if(!['p1','p2','sin','cos'].includes(b.f)||!['p0','pi'].includes(b.c))return{err:'Lựa chọn không hợp lệ'};U.un=[b.f,b.c];U.init=1;save();return{ok:1}}
   case'name':{const n=String(b.n||'').trim();if(n.length<2||n.length>20)return{err:'Tên hiển thị 2–20 ký tự'};if(n.toLowerCase()==id)return{err:'Tên hiển thị phải khác tên đăng nhập'};U.n=n;save();return{ok:1}}
   case'av':{if(!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(b.d||'')||b.d.length>60000)return{err:'Ảnh không hợp lệ'};U.av=b.d;save();return{ok:1}}
   case'prog':{if(typeof b.adm=='string')U.adm=b.adm.slice(0,64);save();return{ok:1}}
