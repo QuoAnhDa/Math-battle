@@ -1076,7 +1076,7 @@ function endBar(w){if(eb)eb.remove();eb=document.createElement('div');eb.style.c
  const t=document.createElement('b');t.style.flex='1';t.textContent=win;eb.append(t);
  const B=(x,f)=>{const b=document.createElement('button');b.className='b';b.textContent=x;b.onclick=()=>{eb.remove();eb=null;f()};eb.append(b)};
  if(MODE=='off')B('🔁 Chơi lại',()=>{build(0)});
- else if(MODE=='duel')B('▶ Chơi tiếp',async()=>{leave();dis=MT?MT.id:dis;tab='duel';openO();const r=await call('queue',{mode:LM});msg=r.err||'';await pull()});
+ else if(MODE=='duel')B('▶ Chơi tiếp',async()=>{if(LUSED)saveSq(LUSED);leave();dis=MT?MT.id:dis;tab='duel';openO();if(tot())PQ={...pick};const r=await call('queue',{mode:LM});msg=r.err||'';if(r.err)PQ=null;await pull()});
  else B('▶ Chơi tiếp',()=>{leave();openO('story')});
  B('',home);{const hb=eb.lastChild;hb.className='ib';hb.innerHTML=ICO.home;hb.setAttribute('aria-label','Về trang chủ');hb.title='Về trang chủ';hb.style.cssText='color:#fff;border-color:#6d28d9;background:transparent'}document.body.append(eb)}
 setInterval(()=>{const p=phase;if(p=='over'&&lastPh!='over'){restoreRN();const w=over>0?over-1:-1;endBar(w);if(CB){const c=CB;CB=null;c(w)}}else if(p!='over'&&eb){eb.remove();eb=null}lastPh=p},400);
@@ -1147,12 +1147,12 @@ function playScene(lines,ctx,done){
  DLG.innerHTML=`<div class="dlk"></div><div class="dls">${cast.map(k=>{const s=spk(k,ctx);return`<div class="dlp" data-k="${k}" style="--pc:${s.c}"><div class="dla">${s.img?`<img src="${E(s.img)}" alt="">`:s.e}</div><b>${E(s.n)}</b><small>${E(s.r)}</small></div>`}).join('')}</div><div class="dlb"><div class="dln"></div><div class="dlt"></div><div class="dlf"><button class="s dlvo" aria-label="Giọng nói"></button><button class="s dlsk">Bỏ qua ⏭</button><span class="dlc"></span><button class="b dlnx">Tiếp ▶</button></div></div>`;
  const q=s=>DLG.querySelector(s),nE=q('.dln'),tx=q('.dlt'),cn=q('.dlc'),nx=q('.dlnx');
  const end=()=>{VO.stop();clearInterval(tm);DLG.hidden=true;DLG.innerHTML='';done&&done()};
- const show=()=>{const [k,t]=lines[i],s=spk(k,ctx);let x=typeof t=='function'?t():t;x=x.replace(/\{n\}/g,ME?ME.n:'bạn').replace(/\{mn\}/g,ctx.mn);full=x;VO.say(k=='m'&&ctx.boss?'B':k,x);
+ const show=()=>{const [k,t]=lines[i],s=spk(k,ctx);let x=typeof t=='function'?t():t;x=x.replace(/\{n\}/g,ME?ME.n:'bạn').replace(/\{mn\}/g,ctx.mn);full=x;VO.say(k=='m'&&ctx.boss?'B':k,x,ctx);
   DLG.querySelectorAll('.dlp').forEach(p=>p.classList.toggle('on',p.dataset.k==k));
   nE.textContent=s?s.n:'';nE.style.color=s?s.c:'';nE.style.display=s?'':'none';tx.className='dlt'+(s?'':' nar');cn.textContent=(i+1)+'/'+lines.length;nx.textContent=i==lines.length-1?(ctx.end||'Tiếp tục'):'Tiếp ▶';
   let p=0;tx.textContent='';clearInterval(tm);tm=setInterval(()=>{p+=2;tx.textContent=full.slice(0,p);if(p>=full.length)clearInterval(tm)},20)};
  const adv=()=>{if(tx.textContent.length<full.length){clearInterval(tm);tx.textContent=full;return}if(++i>=lines.length)end();else show()};
- nx.onclick=adv;q('.dlk').onclick=adv;tx.onclick=adv;q('.dlsk').onclick=end;{const vb=q('.dlvo'),vr=()=>{vb.textContent=VO.on?'🔊':'🔇'};vr();vb.onclick=()=>{VO.tog();vr();if(VO.on)VO.say(lines[i][0],full)}}show()}
+ nx.onclick=adv;q('.dlk').onclick=adv;tx.onclick=adv;q('.dlsk').onclick=end;{const vb=q('.dlvo'),vr=()=>{vb.textContent=VO.on?'🔊':'🔇'};vr();vb.onclick=()=>{VO.tog();vr();if(VO.on)VO.say(lines[i][0],full,ctx)}}show()}
 const cmv=(k,on)=>`<span class="cmv${on?'':' off'}" style="--pc:${CHS[k].c}" title="${CHS[k].n}">${CHS[k].e}</span>`;
 const bchips=(d,h)=>(d?`<span class=bch>⚔ +${pc(d)}% ST</span> `:'')+(h?`<span class=bch>❤ +${pc(h)}% máu</span>`:'');
 const stBuff=()=>{const cs=CS(),b=BF_();return`<div class=g><h3>👥 Đội đồng hành</h3><div class=bfp><span class=cmp>${Object.keys(CHS).map(k=>cmv(k,cs.own.includes(k))).join('')}</span><span class=bch>⚔ +${pc(b.d)}% ST</span><span class=bch>❤ +${pc(b.h)}% máu</span></div>`+(gO()?'':`<div class=m style="margin:8px 0 6px">${CHS.g.e} <b>Khải</b> (thiên tài, +20% ST, +5% máu) đang chờ bạn ở cửa hàng.</div><button class=s data-a=shop>🛒 Mời Khải đồng hành</button>`)+'</div>'};
@@ -1173,8 +1173,8 @@ const V={
 prof:()=>`<div class=g><h3>👤 Hồ sơ</h3><div class=row style="align-items:center">${av(ME,64)}<button class=s data-a=avp>📷 Chọn ảnh từ album</button></div><div class=m>ID: <b>${ME.pid}</b> · Đăng nhập: <b>@${E(ME.u)}</b><br>${lvl()}</div><div class=row><input id=nm class=s value="${E(ME.n)}" maxlength=20 style="flex:1" placeholder="Tên hiển thị"><button class=s data-a=name>Lưu tên</button></div><button class="s dng" data-a=out>Đăng xuất</button></div>`,
 fr:()=>`<div class=g><h3>👥 Bạn bè</h3><div class=row><input id=fu class=s placeholder="ID hoặc tên đăng nhập" style="flex:1"><button class=s data-a=fadd>Kết bạn</button></div>`+(RQ.length?'<div class=m>Lời mời đến:</div>'+RQ.map(u=>row(u,`<button class=b style="flex:none" data-a=facc data-k=${u.u}>Chấp nhận</button>`)).join(''):'')+(FR.length?FR.map(u=>row(u,'')).join(''):'<div class=m>Chưa có bạn bè.</div>')+'</div>',
 duel:()=>{const m=MT;let h='<div class=g><h3>⚔ Online</h3><div class=m>Mỗi bên chốt đội hình bí mật, tối đa '+CAP+' quân, đội hình chỉ lộ khi cả hai đã chốt. Đấu trường ngẫu nhiên.</div>';
- if(!m&&QS)h+=`<div class=m>🔎 <b>${QS.mode=='rank'?'🏆 Xếp hạng':'🎲 Thường'}</b>: đang tìm người chơi… ${Math.floor((QS.e||0)/1000)}s<br><small>Ưu tiên ghép người chơi${QS.mode=='rank'?' cùng hạng (lệch tối đa 20%)':''}. Không có sẽ ghép bot cùng cấp.</small></div><button class=s data-a=qcancel>✕ Huỷ tìm</button>`;else if(!m)h+=`<div class=row><button class=b data-a=queue data-k=normal style="flex:1">🎲 Thường</button>`+(ME.lv>=7?`<button class=b data-a=queue data-k=rank style="flex:1">🏆 Xếp hạng</button>`:`<button class=s data-a=locked style="flex:1">🏆 Xếp hạng 🔒 Lv 7</button>`)+`</div><div class=m>${lvl()}</div><div class=m style="margin-top:8px">Thách đấu bạn bè (chế độ thường):</div>`+(FR.map(u=>row(u,`<button class=s data-a=chal data-k=${u.u}>⚔ Thách</button>`)).join('')||'<div class=m>Chưa có bạn bè.</div>');
- else if(m.st=='pick')h+=`<div class=m>${m.mode=='rank'?'🏆 Xếp hạng':'🎲 Thường'} · Đối thủ: <b>${E(m.opp.n)}</b> (${m.opp.bot?'Bot · Lv '+m.opp.lv:'ID '+m.opp.pid})</div>`+(m.sent?`<div class=m>✅ Bạn đã chốt: ${Object.entries(m.mine).map(([k,n])=>nm(k)+'×'+n).join(', ')}. Đang chờ đối thủ…</div>`:PK()+`<button class=b style="width:100%;margin-top:8px" data-a=submit>🔒 Chốt đội hình</button>`)+`<button class=s data-a=dis style="margin-top:8px">Rời trận</button>`;
+ if(!m&&QS)h+=`<div class=m>🔎 <b>${QS.mode=='rank'?'🏆 Xếp hạng':'🎲 Thường'}</b>: đang tìm người chơi… <b id=qt>${Math.min(Math.floor((QS.e||0)/1000),BW)}s / ${BW}s</b><div style="height:6px;background:#2a3350;border-radius:3px;margin:6px 0;overflow:hidden"><div id=qb style="height:100%;width:${Math.min(100,(QS.e||0)/BW/10)}%;background:#7dd3fc;transition:width .25s linear"></div></div><small>Ưu tiên ghép người chơi${QS.mode=='rank'?' cùng hạng (lệch tối đa 20%)':''}. Hệ thống sẽ tự tìm đối thủ phù hợp cho bạn.</small></div><button class=s data-a=qcancel>✕ Huỷ tìm</button>`;else if(!m)h+=`<div class=m style="margin-top:8px"><b>🎯 Chọn đội hình</b> (tự chốt khi ghép được trận)</div>`+PK()+`<div class=row><button class=b data-a=queue data-k=normal style="flex:1">🎲 Thường</button>`+(ME.lv>=7?`<button class=b data-a=queue data-k=rank style="flex:1">🏆 Xếp hạng</button>`:`<button class=s data-a=locked style="flex:1">🏆 Xếp hạng 🔒 Lv 7</button>`)+`</div><div class=m>${lvl()}</div><div class=m style="margin-top:8px">Thách đấu bạn bè (chế độ thường):</div>`+(FR.map(u=>row(u,`<button class=s data-a=chal data-k=${u.u}>⚔ Thách</button>`)).join('')||'<div class=m>Chưa có bạn bè.</div>');
+ else if(m.st=='pick')h+=`<div class=m>${m.mode=='rank'?'🏆 Xếp hạng':'🎲 Thường'} · Đối thủ: <b>${E(m.opp.n)}</b> (ID ${m.opp.pid})</div>`+(m.sent?`<div class=m>✅ Bạn đã chốt: ${Object.entries(m.mine).map(([k,n])=>nm(k)+'×'+n).join(', ')}. Đang chờ đối thủ…</div>`:PK()+`<button class=b style="width:100%;margin-top:8px" data-a=submit>🔒 Chốt đội hình</button>`)+`<button class=s data-a=dis style="margin-top:8px">Rời trận</button>`;
  else if(m.st=='ready')h+='<div class=m>Cả hai đã chốt, trận sắp bắt đầu…</div>';
  else{const win=m.ab?'Trận đã bị huỷ':m.w==-1?'Hòa':((m.w==0)==m.A?'🏆 Bạn thắng!':'Bạn thua');h+=`<div class=m><b>${win}</b> trước ${E(m.opp.n)}</div><button class=b style="width:100%" data-a=dis>Trận mới</button>`}
  return h+'</div>'},
@@ -1230,17 +1230,58 @@ const bestSq=()=>{try{const u=UN(),ks=ALL().filter(k=>u.has(k));if(!ks.length)re
  s.forEach(x=>x.s=(x.d/md+x.h/mh)/2+(x.d*x.h)/(md*mh)*1e-3);
  s.sort((a,b)=>b.s-a.s);const n=Math.min(s.length,CAP),r={};
  for(let i=0;i<CAP;i++){const k=s[i%n].k;r[k]=(r[k]||0)+1}return r}catch(e){return{}}};
-const autoPick=()=>{if(!tot()){const b=bestSq();if(Object.keys(b).length)pick=b}};
+/* ===== Ghi nhớ đội hình lần trước (máy + máy chủ), vào lại game vẫn dùng đội hình cũ ===== */
+let PQ=null,LUSED=null,lsJ='',lsT=0; // PQ: đội hình đã chọn sẵn để tự chốt khi ghép được trận
+const LSK=()=>'dc_lastsq_'+(ME?ME.pid:0);
+const lastSq=()=>{try{let r=null;try{r=JSON.parse(localStorage[LSK()]||'null')}catch(e){}if(!r||typeof r!='object'||!Object.keys(r).length)r=ME&&ME.ls;if(!r)return null;
+ const u=UN(),o={};let t=0;for(const k in r){if(!u.has(k))continue;const m=Math.min(r[k],CAP-t);if(m>0){o[k]=m;t+=m}}return t?o:null}catch(e){return null}};
+const saveSq=r=>{if(!ME||!r||!Object.keys(r).length)return;const j=JSON.stringify(r);if(j==lsJ)return;lsJ=j;try{localStorage[LSK()]=j}catch(e){}ME.ls={...r};clearTimeout(lsT);lsT=setTimeout(()=>call('lsq',{r}),1200)};
+const autoPick=()=>{if(!tot()){const b=lastSq()||bestSq();if(Object.keys(b).length)pick={...b}}};
 /* ===== Giọng nói tiếng Việt cho nhân vật ===== */
 const CHV={g:'Cảm ơn cậu đã mời tớ! Từ giờ tớ sẽ tính toán cùng cậu.',l:'Chào em, cô sẽ giữ vững đội hình cho em.',b:'Càng đánh càng hăng! Cùng nhau lên nào!',s:'Đạo hàm hay tích phân, lão phu đều không ngại.'};
-const VO={on:localStorage.dc_vo!=='0',vs:[],tm:0,
- P:{h:[1,1,0],g:[1.45,1.12,1],n:[.85,.95,2],m:[.6,.9,3],B:[.4,.82,3],l:[1.25,1,2],b:[.5,1.05,3],s:[.7,.82,1]},
+const VO={on:localStorage.dc_vo!=='0',vs:[],tm:0,mg:null,ac:null,
+ // p=cao độ, r=tốc độ, v=âm lượng, g=giới tính giọng (m nam / f nữ / x trung tính), ai=giọng máy (ngắt từng cụm), st=ngắt nhịp, fx=tiếng động vật
+ P:{h:{p:.75,r:1.05,v:1,g:'m'},g:{p:.62,r:1.12,v:1,g:'m'},n:{p:.9,r:.95,v:.9,g:'x'},m:{p:.5,r:.9,v:1,g:'x'},B:{p:.2,r:.75,v:1,g:'x',ai:1},
+  l:{p:1.35,r:.88,v:.65,g:'f'},b:{p:.4,r:.98,v:1,g:'m'},s:{p:.22,r:.78,v:1,g:'m'}},
+ MV:{'🐌':{p:.6,r:.5,fx:'bubble'},'🐸':{p:.9,r:1.15,fx:'croak'},'🍄':{p:1.8,r:1.2,fx:'boing'},'🐿':{p:1.95,r:1.55,fx:'chit'},'🦉':{p:.7,r:.85,ai:1,fx:'hoot'},
+  '🐍':{p:.8,r:.55,fx:'hiss'},'🕷':{p:1.3,r:1.4,st:1,fx:'click'},'🐻':{p:.1,r:.7,fx:'growl'},'🐺':{p:.25,r:.8,fx:'howl'},'👹':{p:.1,r:.65,ai:1,fx:'digi'},
+  '🦇':{p:1.95,r:1.45,fx:'squeak'},'🐛':{p:1.2,r:1.25,fx:'buzz'},'🪲':{p:.9,r:1.3,fx:'buzz'},'🐟':{p:1.4,r:.8,fx:'bubble'},'🐙':{p:.5,r:.65,fx:'bubble'},
+  '🦀':{p:1,r:1.2,st:1,fx:'click'},'🦈':{p:.2,r:.75,fx:'growl'},'🐉':{p:.1,r:.6,ai:1,fx:'roar'}},
  load(){try{this.vs=speechSynthesis.getVoices().filter(v=>/^vi/i.test(v.lang))}catch(e){}},
- stop(){clearTimeout(this.tm);try{speechSynthesis.cancel()}catch(e){}},
+ stop(){clearTimeout(this.tm);try{speechSynthesis.cancel()}catch(e){}try{if(this.mg){this.mg.gain.cancelScheduledValues(0);this.mg.gain.value=0;this.mg=null}}catch(e){}},
  tog(){this.on=!this.on;localStorage.dc_vo=this.on?1:0;if(!this.on)this.stop()},
- say(k,t){if(!this.on||!window.speechSynthesis||!t)return;this.stop();if(!this.vs.length)this.load();
-  const p=this.P[k]||this.P.n,s=String(t).replace(/\p{Extended_Pictographic}/gu,'').replace(/π/g,' pi ').replace(/²/g,' bình phương').replace(/³/g,' lập phương').replace(/∞/g,' vô cực').replace(/[…→]/g,', ');
-  this.tm=setTimeout(()=>{try{const u=new SpeechSynthesisUtterance(s);u.lang='vi-VN';if(this.vs.length)u.voice=this.vs[p[2]%this.vs.length];u.pitch=p[0];u.rate=p[1];speechSynthesis.speak(u)}catch(e){}},60)}};
+ // chọn giọng thật của thiết bị theo giới tính nếu có; không có thì dựa vào cao độ
+ pv(g){const v=this.vs;if(!v.length)return null;const F=n=>/female|nữ|hoai|linh|\bmy\b|google/i.test(n),M=n=>!/female/i.test(n)&&/\bmale\b|nam\s?minh|\bnam\b/i.test(n);
+  if(g=='m')return v.find(x=>M(x.name))||v.find(x=>!F(x.name))||v[0];if(g=='f')return v.find(x=>F(x.name))||v[0];return v[0]},
+ // hiệu ứng tiếng động vật tổng hợp bằng WebAudio, phát cùng lúc với lời thoại
+ sfx(t,d){try{const c=this.ac||(this.ac=new(window.AudioContext||window.webkitAudioContext)());if(c.state=='suspended')c.resume();
+  const n=c.currentTime,g=c.createGain();g.gain.value=.6;g.connect(c.destination);this.mg=g;
+  const tone=(f0,f1,s,l,ty,v)=>{const o=c.createOscillator(),q=c.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f0,n+s);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),n+s+l);
+   q.gain.setValueAtTime(0,n+s);q.gain.linearRampToValueAtTime(v,n+s+.02);q.gain.exponentialRampToValueAtTime(.001,n+s+l);o.connect(q);q.connect(g);o.start(n+s);o.stop(n+s+l+.05)};
+  const noise=(s,l,f,qq,v,ty)=>{l=Math.max(.3,l);const b=c.createBuffer(1,Math.floor(c.sampleRate*l),c.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;
+   const sr=c.createBufferSource();sr.buffer=b;const fl=c.createBiquadFilter();fl.type=ty||'bandpass';fl.frequency.value=f;fl.Q.value=qq;const e=c.createGain();
+   e.gain.setValueAtTime(0,n+s);e.gain.linearRampToValueAtTime(v,n+s+.05);e.gain.setValueAtTime(v,n+s+l-.12);e.gain.linearRampToValueAtTime(0,n+s+l);sr.connect(fl);fl.connect(e);e.connect(g);sr.start(n+s)};
+  d=Math.min(3.5,Math.max(.6,d||1));
+  if(t=='hiss')noise(0,d,6000,.7,.35,'highpass');
+  else if(t=='croak'){tone(170,90,0,.18,'sawtooth',.25);tone(150,80,.24,.2,'sawtooth',.25)}
+  else if(t=='boing')tone(300,950,0,.28,'sine',.3);
+  else if(t=='chit')for(let i=0;i<4;i++)tone(1800,2700,i*.08,.06,'square',.12);
+  else if(t=='hoot'){tone(430,330,0,.4,'sine',.3);tone(430,320,.5,.4,'sine',.3)}
+  else if(t=='digi')[880,660,990,740].forEach((f,i)=>tone(f,f,i*.1,.08,'square',.14));
+  else if(t=='click')for(let i=0;i<5;i++)tone(2600,1300,i*.07,.03,'square',.18);
+  else if(t=='growl'){tone(75,50,0,.9,'sawtooth',.35);noise(0,.9,300,.8,.25,'lowpass')}
+  else if(t=='howl'){tone(300,640,0,.7,'sine',.3);tone(640,380,.7,.9,'sine',.3)}
+  else if(t=='squeak')for(let i=0;i<3;i++)tone(3000,4300,i*.13,.1,'sine',.14);
+  else if(t=='buzz')tone(185,185,0,Math.min(d,1.5),'sawtooth',.12);
+  else if(t=='bubble')for(let i=0;i<3;i++)tone(400,950,i*.16,.11,'sine',.25);
+  else if(t=='roar'){tone(95,45,0,1.2,'sawtooth',.4);noise(0,1.2,400,.7,.3,'lowpass')}
+ }catch(e){}},
+ say(k,t,ctx){if(!this.on||!window.speechSynthesis||!t)return;this.stop();if(!this.vs.length)this.load();
+  let p=this.P[k]||this.P.n;if((k=='m'||k=='B')&&ctx&&ctx.me)p={v:1,g:'x',...(this.MV[String(ctx.me).replace(/\uFE0F/g,'')]||p)};
+  const s=String(t).replace(/\p{Extended_Pictographic}/gu,'').replace(/π/g,' pi ').replace(/²/g,' bình phương').replace(/³/g,' lập phương').replace(/∞/g,' vô cực').replace(/[…→]/g,', ');
+  if(p.fx)this.sfx(p.fx,s.length*.07/p.r);
+  const vo=this.pv(p.g),ch=(p.ai||p.st)?s.split(/\s+/).reduce((a,w,i)=>{if(i%2)a[a.length-1]+=' '+w;else a.push(w);return a},[]):[s];
+  this.tm=setTimeout(()=>{try{ch.forEach((c,i)=>{const u=new SpeechSynthesisUtterance(c);u.lang='vi-VN';if(vo)u.voice=vo;u.pitch=Math.max(.1,p.p+(p.ai&&i%2?.08:0));u.rate=p.r*(p.st?1.1:1);u.volume=p.v==null?1:p.v;speechSynthesis.speak(u)})}catch(e){}},60)}};
 if(window.speechSynthesis){VO.load();speechSynthesis.onvoiceschanged=()=>VO.load()}
 /* ===== Bảng xếp hạng ===== */
 let LB=null,LBR=null,LBS='rp',LBL=0,FM=null;
@@ -1274,9 +1315,10 @@ function paintH(f){if(H.style.display=='none')return;if(!f&&document.activeEleme
  H.innerHTML=h}
 const F=document.createElement('input');F.type='file';F.accept='image/*';F.hidden=1;
 F.onchange=()=>{const f=F.files[0];if(!f)return;const im=new Image;im.onload=async()=>{const c=document.createElement('canvas');c.width=c.height=96;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,96,96);const r=await call('av',{d:c.toDataURL('image/jpeg',.7)});msg=r.err||'Đã đổi ảnh';await pull();paint();paintH()};im.src=URL.createObjectURL(f);F.value=''};
+const BW=10; // số giây chờ người chơi trước khi ghép bot (khớp BOT_WAIT ở server)
 async function pull(){if(!TK)return;const r=await call('me');if(r.err||!r.me){if(r.bad){TK='';localStorage.dc_tk='';ME=null}paintH();return}
- if(ME&&r.me.mk>ME.mk)toast('💎 Nạp thành công +'+(r.me.mk-ME.mk)+' MK',4000);if(!PRC)call('shop').then(x=>{if(x.p){PRC=x;paint()}});ME=r.me;FR=r.fr;RQ=r.rq;CAP=r.cap;MT=r.m&&r.m.id!=dis?r.m:null;QS=r.qs||null;if(MT&&MT.st=='pick'&&APm!=MT.id){APm=MT.id;autoPick()}
- if(MT&&MT.st=='ready'&&fg!=MT.id&&phase=='pick'){const m=MT;fg=m.id;LM=m.mode||'normal';go(m.seed,m.mine,m.theirs,m.A,async w=>{await call('res',{id:m.id,w});pull()},'duel')}
+ if(ME&&r.me.mk>ME.mk)toast('💎 Nạp thành công +'+(r.me.mk-ME.mk)+' MK',4000);if(!PRC)call('shop').then(x=>{if(x.p){PRC=x;paint()}});ME=r.me;FR=r.fr;RQ=r.rq;CAP=r.cap;MT=r.m&&r.m.id!=dis?r.m:null;QS=r.qs||null;if(QS)QS.t0=Date.now()-QS.e;if(MT&&MT.st=='pick'&&APm!=MT.id){APm=MT.id;autoPick();if(PQ&&!MT.sent){const q=PQ;PQ=null;call('pick',{id:MT.id,ro:q}).then(x=>{if(x.err){msg=x.err}pull()})}}
+ if(MT&&MT.st=='ready'&&fg!=MT.id&&phase=='pick'){const m=MT;fg=m.id;LM=m.mode||'normal';LUSED=m.mine;go(m.seed,m.mine,m.theirs,m.A,async w=>{await call('res',{id:m.id,w});pull()},'duel')}
  if(!(document.activeElement&&document.activeElement.tagName=='INPUT')){paint();paintH()}}
 async function act(a,k,v,c){
  if(a=='x'){home();return}
@@ -1309,10 +1351,10 @@ async function act(a,k,v,c){
  else if(a=='fadd'){const r=await call('fadd',{u:v('fu')});msg=r.err||r.ok||'';await pull()}
  else if(a=='facc'){await call('facc',{u:k});await pull()}
  else if(a=='locked'){msg='Cần đạt Lv 7 để chơi xếp hạng (hiện Lv '+ME.lv+')'}
- else if(a=='chal'||a=='queue'){LM=k=='rank'?'rank':'normal';const r=await call(a,{to:k,mode:k});msg=r.err||'';await pull()}
- else if(a=='submit'){const r=await call('pick',{id:MT.id,ro:pick});msg=r.err||'';if(!r.err){pick={};autoPick()}await pull()}
- else if(a=='dis'){dis=MT.id;MT=null;call('cq')}
-  else if(a=='qcancel'){await call('cq');QS=null}
+ else if(a=='chal'||a=='queue'){if(!tot()){msg='Hãy chọn đội hình trước khi ghép trận';toast(msg)}else{LM=k=='rank'?'rank':'normal';saveSq(pick);PQ={...pick};const r=await call(a,{to:k,mode:k});msg=r.err||'';if(r.err)PQ=null;await pull()}}
+ else if(a=='submit'){const r=await call('pick',{id:MT.id,ro:pick});msg=r.err||'';if(!r.err){saveSq(pick);pick={};autoPick()}await pull()}
+ else if(a=='dis'){dis=MT.id;MT=null;PQ=null;call('cq')}
+  else if(a=='qcancel'){PQ=null;await call('cq');QS=null}
  else if(a=='adm'){const h=HH(v('ac').trim().toUpperCase());await call('prog',{adm:h});await pull();if(ME.admok)msg='✅ Đã mở khoá toàn bộ ký hiệu';else{await call('prog',{adm:''});await pull();msg='Mã không đúng, đã bị thu hồi hoặc hết hạn'}}
  else if(a=='ch'){if(+k>=2){msg='🔒 Chương này sẽ mở ở bản cập nhật sau';toast(msg)}else CH=+k}
  else if(a=='sqsave'){const l=[...SQ()],n=(v('sqn')||'').trim()||('Đội '+(l.length+1));if(!tot())msg='Hãy chọn quân trước khi lưu';else if(l.length>=10)msg='Tối đa 10 đội hình, hãy xoá bớt';else{l.push({n,r:{...pick}});const r=await call('sqset',{l});msg=r.err||('✅ Đã lưu “'+n+'”');await pull()}}
@@ -1321,10 +1363,10 @@ async function act(a,k,v,c){
  else if(a=='cbuy'){const c0=CHS[k];if(c0&&!CS().own.includes(k)){const nd=c0.p-(ME.mp-CS().spent);if(nd>0){FM={t:'mp',need:nd,n:c0.n};setTimeout(()=>{O.scrollTop=0});paint(1);return}const r=await call('cbuy',{k});msg=r.err||'';if(r.err)toast(r.err);else{toast('🎉 '+c0.n+' đã gia nhập đội!',3000);VO.say(k,CHV[k])}await pull()}}
  else if(a=='buy'){const nd=PRC?(c=='mp'?PRC.p[k]-(ME.mp-CS().spent):Math.ceil(PRC.p[k]/PRC.r)-ME.mk):0;if(nd>0){FM={t:c,need:nd,n:nm(k)};setTimeout(()=>{O.scrollTop=0});paint(1);return}FM=null;const r=await call('buy',{k,cur:c});msg=r.err||('Đã mua '+nm(k));await pull()}
  else if(a=='topup'){const r=await call('topup',{amount:+k});msg=r.err||'';await pull()}
- else if(a=='stage'){const jj=+k,i=CH*10+jj;if(CH>=2)msg='🔒 Chương này sẽ mở ở bản cập nhật sau';else if(i>ME.st)msg='Hãy vượt màn trước';else if(!tot())msg='Hãy chọn đội hình trước';else{const mine={...pick},ch=CH,cl=ME.st>i,cx=SCX(ch,jj);
+ else if(a=='stage'){const jj=+k,i=CH*10+jj;if(CH>=2)msg='🔒 Chương này sẽ mở ở bản cập nhật sau';else if(i>ME.st)msg='Hãy vượt màn trước';else if(!tot())msg='Hãy chọn đội hình trước';else{const mine={...pick},ch=CH,cl=ME.st>i,cx=SCX(ch,jj);saveSq(mine);
   const run=()=>go(i*977+13,mine,enemy(ch,jj),true,async w=>{if(w==0){const r=await call('clear',{i});toast(r.err||('🎉 Thắng! +'+r.mp+' MP · +'+r.xp+' XP'),4000)}else toast('Chưa thắng, thử đội hình khác');pull();if(!cl)playScene(w==0?winL(ch,jj):loseL(ch,jj),{...cx,end:'Tiếp tục'})},'story');
   if(cl)run();else playScene(preL(ch,jj),cx,run);return}if(msg)toast(msg)}
- paint(1);paintH(1)}
+ if(tot())saveSq(pick);paint(1);paintH(1)}
 const hd=e=>{const b=e.target.closest('[data-a]');if(!b)return;msg='';act(b.dataset.a,b.dataset.k,id=>($(id)||{}).value||'',b.dataset.c)};
 O.onclick=hd;H.onclick=hd;
 {const g0=$('go').onclick;$('go').onclick=e=>{restoreRN();const u=UN(),bad=[...new Set(ros.slice(0,nt).flatMap(r=>Object.keys(r)))].filter(k=>!u.has(k));if(bad.length){$('err').textContent='Chưa mở khoá: '+bad.map(nm).join(', ');return}MODE='off';CB=null;BUFF.d=BUFF.h=0;MB.forEach(m=>{m.d=m.h=m.s=0;m.dl=[]});g0(e)}}
@@ -1332,6 +1374,10 @@ const HB=document.createElement('button');HB.className='ib';HB.id='hmo';HB.style
 const GH=document.createElement('button');GH.className='s ib sm';GH.id='hm2';GH.setAttribute('aria-label','Về trang chủ');GH.title='Về trang chủ';GH.innerHTML=ICO.home;GH.onclick=home;$('stg2').before(GH);
 new MutationObserver(()=>{const m=document.getElementById('stgm');if(!m||m.dataset.p)return;m.dataset.p=1;const t=m.querySelector('.stt');if(!t)return;const b=document.createElement('button');b.className='s';b.textContent='👤 Người chơi';b.onclick=()=>{m.remove();openO('prof')};t.appendChild(b)}).observe(document.body,{childList:true});
 document.body.append(H,O,F);paintH();setInterval(pull,3000);pull();
+// đồng hồ ghép trận chạy mượt từng 250ms; hết BW giây thì hỏi server ngay để nhận bot
+let qpl=0;setInterval(()=>{if(!QS||MT){qpl=0;return}const e=Date.now()-(QS.t0||Date.now()),t=document.getElementById('qt'),b=document.getElementById('qb');
+ if(t)t.textContent=Math.min(Math.floor(e/1000),BW)+'s / '+BW+'s'+(e>=BW*1000?'':'');if(b)b.style.width=Math.min(100,e/BW/10)+'%';
+ if(e>=BW*1000&&Date.now()-qpl>1000){qpl=Date.now();pull()}},250);
 })();
 
 </script>
