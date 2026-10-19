@@ -85,7 +85,7 @@ function api(b){
    if(!x)D.adm.codes.push({h:c.h,n:String(c.n||'').slice(0,40),by:String(c.by||'').slice(0,60),exp:+c.exp||0,rv:c.rv?1:0});else if(c.rv)x.rv=1}save()}
   return{codes:D.adm.codes}}
  if(!U)return{bad:1,err:'Hãy đăng nhập'};
- U.seen=Date.now();
+ U.seen=Date.now();if(U.sv!==4){const o=U.st||0,r=o%10;U.st=Math.floor(o/10)*4+(r>2)+(r>5)+(r>8);U.sv=4;save()} // đổi tiến độ cốt truyện: 10 màn/chương -> 4 màn/chương
  switch(b.a){
   case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U),bk:U.bk?{bank:U.bk.bank,l4:U.bk.l4,name:U.bk.name,st:U.bk.st}:null},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,rm:rview(id),ri:(U.ri||[]).filter(c=>(D.rm||{})[c]&&D.rm[c].st=='lobby'),m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
@@ -95,7 +95,7 @@ function api(b){
    const seen=new Set(byR.slice(0,30).map(x=>x.pid)),top=byR.slice(0,30).concat(byL.slice(0,30).filter(x=>!seen.has(x.pid)));
    return{top,rk:{rp:byR.findIndex(x=>x.pid==mp)+1,lv:byL.findIndex(x=>x.pid==mp)+1,n:all.length}}}
   case'buy':{const p=PRICE[b.k];if(p==null)return{err:'Vật phẩm không tồn tại'};if(U.un.includes(b.k))return{err:'Bạn đã sở hữu ký hiệu này'};const cur=b.cur=='mk'?'mk':'mp',cost=cur=='mk'?Math.ceil(p/MKP):p;if((U[cur]||0)<cost)return{err:'Không đủ '+cur.toUpperCase()};U[cur]-=cost;U.un.push(b.k);save();return{ok:1}}
-  case'clear':{const i=b.i;if(!Number.isInteger(i)||i<0||i>=NCH*10||i>(U.st||0))return{err:'Màn chưa mở'};const c=Math.floor(i/10),j=i%10,first=i==(U.st||0),base=Math.round([10,10,15,20,35,40,45,50,90,120][j]*(1+c*.3)),mp=first?base:Math.max(1,Math.floor(base*.2)),xp=first?20+j*5:5;U.mp=(U.mp||0)+mp;U.xp=(U.xp||0)+xp;if(first)U.st=i+1;save();return{mp,xp}}
+  case'clear':{const i=b.i;if(!Number.isInteger(i)||i<0||i>=NCH*4||i>(U.st||0))return{err:'Màn chưa mở'};const c=Math.floor(i/4),s=i%4,JS=[[0,1,2],[3,4,5],[6,7,8],[9]][s],B=[10,10,15,20,35,40,45,50,90,120],first=i==(U.st||0),base=Math.round(JS.reduce((x,j)=>x+B[j],0)*(1+c*.3)),mp=first?base:Math.max(1,Math.floor(base*.2)),xp=first?JS.reduce((x,j)=>x+20+j*5,0):5;U.mp=(U.mp||0)+mp;U.xp=(U.xp||0)+xp;if(first)U.st=i+1;save();return{mp,xp}}
   case'cbuy':{const p=CHP[b.k];if(p==null)return{err:'Nhân vật không tồn tại'};U.ch=U.ch||[];if(U.ch.includes(b.k))return{err:'Bạn đã có nhân vật này'};if((U.mp||0)<p)return{err:'Không đủ MP'};U.mp-=p;U.ch.push(b.k);save();return{ok:1}}
   case'sqset':{const l=b.l;if(!Array.isArray(l)||l.length>10)return{err:'Tối đa 10 đội hình'};const o=[];for(const q of l){const r=q&&q.r,n=String(q&&q.n||'').trim().slice(0,20);if(!n||!r||typeof r!='object')return{err:'Đội hình không hợp lệ'};let t=0;for(const k in r){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(r[k])||r[k]<1)return{err:'Đội hình không hợp lệ'};t+=r[k]}if(t<1||t>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};o.push({n,r})}U.sq=o;save();return{ok:1}}
   case'blink':{const bk=String(b.bank||'').trim().slice(0,30),ac=String(b.acc||'').replace(/\s/g,''),nm=String(b.name||'').trim().toUpperCase().slice(0,40);
