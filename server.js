@@ -55,6 +55,7 @@ const own=u=>({u:u.id,pid:pidOf(u),n:u.n,av:u.av,un:u.un,st:u.st,adm:u.adm,xp:u.
 const view=(m,id)=>{const A=m.a==id,my=A?m.pa:m.pb,th=A?m.pb:m.pa;return{id:m.id,st:m.st,A,opp:m.bot?{u:'u'+m.bot.pid,n:m.bot.n,av:'',pid:m.bot.pid,lv:m.bot.lv}:pub(A?m.b:m.a),ab:m.ab||0,mine:my,sent:!!my,theirs:m.st=='pick'?null:th,seed:m.seed,w:m.w,mode:m.mode}};
 const last=id=>[...D.m].reverse().find(m=>m.a==id||m.b==id);
 const stale=m=>m.st!='done'&&Date.now()-(m.ts||0)>(m.st=='pick'?18e4:6e5); // trận bỏ dở quá lâu thì coi như đã kết thúc
+const drop=id=>{D.m.forEach(m=>{if(m.st!='done'&&(m.a==id||m.b==id)){m.st='done';m.w=-1;m.ab=1}})}; // kết thúc trận dở dang của người chơi
 const busy=id=>{const m=last(id);return m&&m.st!='done'&&!stale(m)};
 // ===== Ghép trận: ưu tiên người chơi, không có thì ghép bot cùng cấp =====
 const BOT_WAIT=+process.env.BOT_WAIT||10000,lvOf=u=>1+Math.floor((u.xp||0)/100),Q=()=>D.qq=D.qq||[];
@@ -122,12 +123,12 @@ function api(b){
    if(U.rq.includes(t)){U.rq=U.rq.filter(x=>x!=t);U.fr.push(t);T.fr.push(id)}else if(!T.rq.includes(id))T.rq.push(id);save();return{ok:'Đã gửi lời mời'}}
   case'facc':{if(U.rq.includes(b.u)&&D.u[b.u]){U.rq=U.rq.filter(x=>x!=b.u);U.fr.push(b.u);D.u[b.u].fr.push(id);save()}return{ok:1}}
   case'chal':{if(!U.fr.includes(b.to))return{err:'Chỉ thách đấu bạn bè'};if(busy(id)||busy(b.to))return{err:'Một trong hai người đang có trận'};newM(id,b.to);save();return{ok:1}}
-  case'queue':{const md=b.mode=='rank'?'rank':'normal';if(md=='rank'&&own(U).lv<7)return{err:'Cần đạt Lv 7 để chơi xếp hạng'};if(busy(id))return{err:'Bạn đang có trận'};
-   const now=Date.now();D.qq=Q().filter(x=>D.u[x.id]&&now-D.u[x.id].seen<15000&&!busy(x.id));
+  case'queue':{const md=b.mode=='rank'?'rank':'normal';if(md=='rank'&&own(U).lv<7)return{err:'Cần đạt Lv 7 để chơi xếp hạng'};{const cur=last(id);if(cur&&cur.st!='done'){if(Date.now()-(cur.ts||0)<6000)return{ok:1};drop(id)}} // trận vừa tạo thì giữ; trận cũ bỏ dở thì đóng lại để ghép trận mới
+   const now=Date.now();D.qq=Q().filter(x=>D.u[x.id]&&now-D.u[x.id].seen<30000&&!busy(x.id));
    if(D.qq.some(x=>x.id==id&&x.mode==md))return{ok:1};D.qq=D.qq.filter(x=>x.id!=id);
    const cand=D.qq.find(x=>x.mode==md&&(md!='rank'||rpOk(U.rp||0,D.u[x.id].rp||0)));
    if(cand){D.qq=D.qq.filter(x=>x!==cand);newM(cand.id,id,md)}else D.qq.push({id,mode:md,ts:now});save();return{ok:1}}
-  case'cq':{D.qq=Q().filter(x=>x.id!=id);D.m.forEach(m=>{if(m.st=='pick'&&(m.a==id||m.b==id)){m.st='done';m.w=-1;m.ab=1}});save();return{ok:1}}
+  case'cq':{D.qq=Q().filter(x=>x.id!=id);drop(id);save();return{ok:1}}
   case'lsq':{const r=b.r;if(!r||typeof r!='object')return{err:'Đội hình không hợp lệ'};let t=0;for(const k in r){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(r[k])||r[k]<1)return{err:'Đội hình không hợp lệ'};t+=r[k]}if(t<1||t>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};U.ls=r;save();return{ok:1}}
   case'pick':{const m=D.m.find(x=>x.id==b.id&&(x.a==id||x.b==id));if(!m||m.st!='pick')return{err:'Trận không còn nhận đội hình'};const ro=b.ro||{};let n=0;
    for(const k in ro){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(ro[k])||ro[k]<1)return{err:'Đội hình không hợp lệ'};n+=ro[k]}
