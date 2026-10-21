@@ -4,8 +4,9 @@ const DBF=path.join(__dirname,'data.json'),CAP=6,PORT=process.env.PORT||3000;
 let D={u:{},s:{},m:[],q:null};try{D=JSON.parse(fs.readFileSync(DBF,'utf8'))}catch(e){}
 D.adm=D.adm||{codes:[]};D.pid=D.pid||100000;const ADMK=process.env.ADMIN_KEY||'';
 const admok=c=>!!c&&D.adm.codes.some(x=>x.h===c&&!x.rv&&(!x.exp||x.exp>Date.now()));
-const PRICE={p0:80,pi:120,p1:80,p2:100,p3:200,p4:300,sin:150,cos:150,tan:300,cot:300,secx:400,cscx:400,asin:700,acos:700,atan:700,acot:700,exp:500,ln:550,inv:450,sqrt:450,abs:400,an:900,csc:900,csn:1000,fib:1000,lim:1400,sig:1100,fac:1000,cmb:1200,arr:1200,mul:900,add:900,sinh:600,cosh:600,flo:600,det:1500,D:800,I:1500,J:1800,V:1500,M:2000,C:1600,S:1700};
-const NCH=10;const CHP={g:120,l:150,b:180,s:400};
+const PRICE={p0:80,pi:120,p1:80,p2:100,p3:200,p4:300,sin:150,cos:150,tan:300,cot:300,secx:400,cscx:400,asin:700,acos:700,atan:700,acot:700,exp:500,ln:550,inv:450,sqrt:450,abs:400,an:900,csc:900,csn:1000,fib:1000,lim:1400,sig:1100,fac:1000,cmb:1200,arr:1200,mul:900,add:900,sub:900,div:900,eq:700,par:1000,unk:800,inf:1800,sinh:600,cosh:600,flo:600,det:1500,D:800,I:1500,J:1800,V:1500,M:2000,C:1600,S:1700};
+const NCH=10,NSY=['add','sub','mul','div','eq','par','unk','sqrt','abs','inf'],BASE=[]; // ký hiệu nhận khi phá đảo chương 1..10 (theo tiểu thuyết); người mới KHÔNG có ký hiệu nào, chỉ nhận dấu + sau khi xem hết Chương khởi đầu
+const CHP={g:120,l:150,b:180,s:400};
 const MKP=50,MKR=+process.env.MK_RATE||1000,HOOK=process.env.WEBHOOK_KEY||'',B={bin:process.env.BANK_BIN||'970422',acc:process.env.BANK_ACC||'',name:process.env.BANK_NAME||''};
 D.o=D.o||{};D.tx=D.tx||{};
 const qrUrl=(c,o)=>`https://img.vietqr.io/image/${B.bin}-${B.acc}-compact2.png?amount=${o.amt}&addInfo=${c}&accountName=${encodeURIComponent(B.name)}`;
@@ -51,8 +52,8 @@ process.on('SIGTERM',bye);process.on('SIGINT',bye);setInterval(()=>ghPush(),3000
 const hash=(p,s)=>cr.scryptSync(p,s,32).toString('hex');
 const pidOf=u=>{if(!u.pid)u.pid=++D.pid;return u.pid};
 const pub=id=>{const u=D.u[id];return u?{u:id,n:u.n,av:u.av||'',pid:pidOf(u)}:null};
-const own=u=>({u:u.id,pid:pidOf(u),n:u.n,av:u.av,un:u.un,st:u.st,adm:u.adm,xp:u.xp||0,lv:1+Math.floor((u.xp||0)/100),rp:u.rp||0,mp:u.mp||0,mk:u.mk||0,init:u.init===undefined?(u.un.length?1:0):u.init,ch:u.ch||[],sq:u.sq||[],ls:u.ls||null});
-const view=(m,id)=>{const A=m.a==id,my=A?m.pa:m.pb,th=A?m.pb:m.pa;return{id:m.id,st:m.st,A,opp:m.bot?{u:'u'+m.bot.pid,n:m.bot.n,av:'',pid:m.bot.pid,lv:m.bot.lv}:pub(A?m.b:m.a),ab:m.ab||0,mine:my,sent:!!my,theirs:m.st=='pick'?null:th,seed:m.seed,w:m.w,mode:m.mode}};
+const own=u=>({u:u.id,pid:pidOf(u),n:u.n,av:u.av,un:u.un,st:u.st,adm:u.adm,xp:u.xp||0,lv:1+Math.floor((u.xp||0)/100),rp:u.rp||0,mp:u.mp||0,mk:u.mk||0,init:1,ch:u.ch||[],sq:u.sq||[],ls:u.ls||null});
+const view=(m,id)=>{const A=m.a==id,my=A?m.pa:m.pb,th=A?m.pb:m.pa;return{id:m.id,st:m.st,A,opp:m.bot?{u:'u'+m.bot.pid,n:m.bot.n,av:'',pid:m.bot.pid,lv:m.bot.lv}:pub(A?m.b:m.a),ab:m.ab||0,mine:my,sent:!!my,theirs:m.st=='pick'?null:th,seed:m.seed,w:m.w,mode:m.mode,rw:(m.rw||{})[id]||null}};
 const last=id=>[...D.m].reverse().find(m=>m.a==id||m.b==id);
 const stale=m=>m.st!='done'&&Date.now()-(m.ts||0)>(m.st=='pick'?18e4:6e5); // trận bỏ dở quá lâu thì coi như đã kết thúc
 const drop=id=>{D.m.forEach(m=>{if(m.st!='done'&&(m.a==id||m.b==id)){m.st='done';m.w=-1;m.ab=1}})}; // kết thúc trận dở dang của người chơi
@@ -77,7 +78,7 @@ function api(b){
   const u=String(b.u||'').toLowerCase(),p=String(b.p||'');
   if(!/^[a-z0-9_]{3,20}$/.test(u))return{err:'Tên đăng nhập 3–20 ký tự: a-z, 0-9, _'};
   if(b.a=='reg'){if(D.u[u])return{err:'Tên đăng nhập đã có người dùng'};if(p.length<4)return{err:'Mật khẩu tối thiểu 4 ký tự'};
-   const s=cr.randomBytes(8).toString('hex');D.u[u]={id:u,s,h:hash(p,s),n:'Người chơi '+(100+Math.floor(Math.random()*900)),av:'',un:[],init:0,xp:0,rp:0,pid:++D.pid,st:0,adm:'',fr:[],rq:[]}}
+   const s=cr.randomBytes(8).toString('hex');D.u[u]={id:u,s,h:hash(p,s),n:'Người chơi '+(100+Math.floor(Math.random()*900)),av:'',un:BASE.slice(),init:1,xp:0,rp:0,pid:++D.pid,st:0,adm:'',fr:[],rq:[]}}
   else{const x=D.u[u];if(!x||x.h!==hash(p,x.s))return{err:'Sai tên đăng nhập hoặc mật khẩu'}}
   const t=cr.randomBytes(16).toString('hex');D.s[t]=u;save();return{t}}
  if(b.a=='admget'||b.a=='admset'){
@@ -87,6 +88,7 @@ function api(b){
   return{codes:D.adm.codes}}
  if(!U)return{bad:1,err:'Hãy đăng nhập'};
  U.seen=Date.now();if(U.sv!==4){const o=U.st||0,r=o%10;U.st=Math.floor(o/10)*4+(r>2)+(r>5)+(r>8);U.sv=4;save()} // đổi tiến độ cốt truyện: 10 màn/chương -> 4 màn/chương
+ {U.un=U.un||[];let ch=0;for(const k of BASE)if(!U.un.includes(k)&&!U.init){U.un.push(k);ch=1}U.init=1;const cl=Math.floor((U.st||0)/4);for(let c=0;c<Math.min(cl,NCH);c++)if(!U.un.includes(NSY[c])){U.un.push(NSY[c]);ch=1}if(ch)save()} // luôn có ký hiệu khởi đầu; bù ký hiệu của các chương đã phá đảo
  switch(b.a){
   case'me':{botFill(id);let m=last(id);if(m&&stale(m)){m.st='done';m.w=-1;m.ab=1;save()}const w=Q().find(x=>x.id==id);return{me:{...own(U),admok:admok(U.adm),ord:ordOf(U),bk:U.bk?{bank:U.bk.bank,l4:U.bk.l4,name:U.bk.name,st:U.bk.st}:null},fr:U.fr.map(pub),rq:U.rq.map(pub),cap:CAP,rm:rview(id),ri:(U.ri||[]).filter(c=>(D.rm||{})[c]&&D.rm[c].st=='lobby'),m:m?view(m,id):null,qs:w?{mode:w.mode,e:Date.now()-w.ts}:null}}
   case'shop':return{p:PRICE,r:MKP,rate:MKR}
@@ -96,7 +98,7 @@ function api(b){
    const seen=new Set(byR.slice(0,30).map(x=>x.pid)),top=byR.slice(0,30).concat(byL.slice(0,30).filter(x=>!seen.has(x.pid)));
    return{top,rk:{rp:byR.findIndex(x=>x.pid==mp)+1,lv:byL.findIndex(x=>x.pid==mp)+1,n:all.length}}}
   case'buy':{const p=PRICE[b.k];if(p==null)return{err:'Vật phẩm không tồn tại'};if(U.un.includes(b.k))return{err:'Bạn đã sở hữu ký hiệu này'};const cur=b.cur=='mk'?'mk':'mp',cost=cur=='mk'?Math.ceil(p/MKP):p;if((U[cur]||0)<cost)return{err:'Không đủ '+cur.toUpperCase()};U[cur]-=cost;U.un.push(b.k);save();return{ok:1}}
-  case'clear':{const i=b.i;if(!Number.isInteger(i)||i<0||i>=NCH*4||i>(U.st||0))return{err:'Màn chưa mở'};const c=Math.floor(i/4),s=i%4,JS=[[0,1,2],[3,4,5],[6,7,8],[9]][s],B=[10,10,15,20,35,40,45,50,90,120],first=i==(U.st||0),base=Math.round(JS.reduce((x,j)=>x+B[j],0)*(1+c*.3)),mp=first?base:Math.max(1,Math.floor(base*.2)),xp=first?JS.reduce((x,j)=>x+20+j*5,0):5;U.mp=(U.mp||0)+mp;U.xp=(U.xp||0)+xp;if(first)U.st=i+1;save();return{mp,xp}}
+  case'clear':{const i=b.i;if(!Number.isInteger(i)||i<0||i>=NCH*4||i>(U.st||0))return{err:'Màn chưa mở'};const c=Math.floor(i/4),s=i%4,JS=[[0,1,2],[3,4,5],[6,7,8],[9]][s],B=[10,10,15,20,35,40,45,50,90,120],first=i==(U.st||0),base=Math.round(JS.reduce((x,j)=>x+B[j],0)*(1+c*.3)),mp=first?base:Math.max(10,Math.round(base*.6)),xp=first?JS.reduce((x,j)=>x+20+j*5,0):10;U.mp=(U.mp||0)+mp;U.xp=(U.xp||0)+xp;let sym=null;if(first&&s==3&&NSY[c]&&!U.un.includes(NSY[c])){U.un.push(NSY[c]);sym=NSY[c]}if(first)U.st=i+1;save();return{mp,xp,re:first?0:1,sym}}
   case'cbuy':{const p=CHP[b.k];if(p==null)return{err:'Nhân vật không tồn tại'};U.ch=U.ch||[];if(U.ch.includes(b.k))return{err:'Bạn đã có nhân vật này'};if((U.mp||0)<p)return{err:'Không đủ MP'};U.mp-=p;U.ch.push(b.k);save();return{ok:1}}
   case'sqset':{const l=b.l;if(!Array.isArray(l)||l.length>10)return{err:'Tối đa 10 đội hình'};const o=[];for(const q of l){const r=q&&q.r,n=String(q&&q.n||'').trim().slice(0,20);if(!n||!r||typeof r!='object')return{err:'Đội hình không hợp lệ'};let t=0;for(const k in r){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(r[k])||r[k]<1)return{err:'Đội hình không hợp lệ'};t+=r[k]}if(t<1||t>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};o.push({n,r})}U.sq=o;save();return{ok:1}}
   case'blink':{const bk=String(b.bank||'').trim().slice(0,30),ac=String(b.acc||'').replace(/\s/g,''),nm=String(b.name||'').trim().toUpperCase().slice(0,40);
@@ -115,7 +117,8 @@ function api(b){
    case'rpick':{const r=rof(id);if(!r||r.st!='pick')return{err:'Phòng không nhận đội hình'};const ro=b.ro||{};let n=0;for(const k in ro){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(ro[k])||ro[k]<1)return{err:'Đội hình không hợp lệ'};n+=ro[k]}if(n<1||n>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};
     r.mem.find(x=>x.u==id).ro=ro;if(r.mem.every(x=>x.ro))r.st='ready';r.ts=Date.now();save();return{ok:1}}
    case'rdone':{const r=rof(id);if(r&&r.st=='ready'){r.st='lobby';r.mem.forEach(x=>x.ro=null);r.ts=Date.now();save()}return{ok:1}}
-   case'starter':{if(own(U).init)return{err:'Bạn đã nhận ký hiệu khởi đầu'};if(!['p1','p2','sin','cos'].includes(b.f)||!['p0','pi'].includes(b.c))return{err:'Lựa chọn không hợp lệ'};U.un=[b.f,b.c];U.init=1;save();return{ok:1}}
+   case'pro':{let sym=null;if(!U.un.includes('add')){U.un.push('add');sym='add'}U.pro=1;save();return{ok:1,sym}}
+  case'starter':return{err:'Ký hiệu khởi đầu đã được tặng tự động'}
   case'name':{const n=String(b.n||'').trim();if(n.length<2||n.length>20)return{err:'Tên hiển thị 2–20 ký tự'};if(n.toLowerCase()==id)return{err:'Tên hiển thị phải khác tên đăng nhập'};U.n=n;save();return{ok:1}}
   case'av':{if(!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(b.d||'')||b.d.length>60000)return{err:'Ảnh không hợp lệ'};U.av=b.d;save();return{ok:1}}
   case'prog':{if(typeof b.adm=='string')U.adm=b.adm.slice(0,64);save();return{ok:1}}
@@ -134,7 +137,10 @@ function api(b){
    for(const k in ro){if(!/^[\w:.@-]{1,30}$/.test(k)||!Number.isInteger(ro[k])||ro[k]<1)return{err:'Đội hình không hợp lệ'};n+=ro[k]}
    if(n<1||n>CAP)return{err:'Tổng số quân phải từ 1 đến '+CAP};
    if(m.a==id)m.pa=ro;else m.pb=ro;if(m.pa&&m.pb){m.st='ready';m.ts=Date.now()}save();return{ok:1}}
-  case'res':{const m=D.m.find(x=>x.id==b.id&&(x.a==id||x.b==id));if(m&&m.st=='ready'){m.w=[0,1].includes(b.w)?b.w:-1;m.st='done';[[m.a,0],[m.b,1]].forEach(([p,i])=>{const P=D.u[p];if(!P)return;const win=m.w==i,dr=m.w==-1;P.xp=(P.xp||0)+(dr?15:win?(m.mode=='rank'?40:30):10);if(m.mode=='rank')P.rp=Math.max(0,(P.rp||0)+(dr?0:win?25:-15))});save()}return{ok:1}}
+  case'res':{const m=D.m.find(x=>x.id==b.id&&(x.a==id||x.b==id));if(m&&m.st=='ready'){m.w=[0,1].includes(b.w)?b.w:-1;m.st='done';m.rw={};[[m.a,0],[m.b,1]].forEach(([p,i])=>{const P=D.u[p];if(!P)return;const win=m.w==i,dr=m.w==-1,rk=m.mode=='rank',
+    xp=dr?15:win?(rk?40:30):10, mp=dr?(rk?12:10):win?(rk?30:20):(rk?8:5); // thưởng EXP + MP cho cả đấu thường lẫn xếp hạng
+    P.xp=(P.xp||0)+xp;P.mp=(P.mp||0)+mp;let rp=0;if(rk){const o=P.rp||0;P.rp=Math.max(0,o+(dr?0:win?25:-15));rp=P.rp-o}
+    m.rw[p]={xp,mp,rp,r:dr?0:win?1:-1}});save()}return{ok:1,rw:(m&&m.rw&&m.rw[id])||null}}
  }
  return{err:'?'}}
 ghStart().then(()=>http.createServer((q,r)=>{
